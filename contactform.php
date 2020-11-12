@@ -1,8 +1,8 @@
 <?php
 require('connectdb.php');
 require('contact_db.php');
-$sid = "ct4wa";             // need to be passed from previous page
-$managerID = "1234";	   // need to be passed from previous page
+$sid = $_POST['sid'];            // need to be passed from previous page
+$managerID = $_POST['managerID'];   // need to be passed from previous page
 $message = "";
 
 $messages = getAllMessages($sid);

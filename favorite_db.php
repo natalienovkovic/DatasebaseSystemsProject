@@ -19,26 +19,11 @@
 //      execute() actually executes the SQL statement
 
 
-function addToWaitlist($sid, $listingID)
+function addToFavorite($sid, $listingID)
 {
 
   global $db;
-  $query = "INSERT INTO Waitlist VALUES(:sid, :listingID, NULL)";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':sid', $sid);
-  $statement->bindValue(':listingID', $listingID);
-  $statement->execute();
-
-  $results = $statement->fetchAll(); // returns an array of rows
-  $statement->closeCursor();
-	
-}
-
-function removeFromWaitlist($sid, $listingID)
-{
-
-  global $db;
-  $query = "DELETE FROM Waitlist WHERE sid=:sid AND listingID=:listingID";
+  $query = "INSERT INTO Favorite VALUES(:sid, :listingID)";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
   $statement->bindValue(':listingID', $listingID);
@@ -50,11 +35,11 @@ function removeFromWaitlist($sid, $listingID)
 }
 
 
-function getPosition($sid, $listingID)
+function removeFavorite($sid, $listingID)
 {
 
   global $db;
-  $query = "SELECT * FROM Waitlist WHERE sid=:sid AND listingID=:listingID";
+  $query = "DELETE FROM Favorite WHERE sid=:sid AND listingID=:listingID";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
   $statement->bindValue(':listingID', $listingID);
@@ -63,9 +48,28 @@ function getPosition($sid, $listingID)
   $results = $statement->fetchAll(); // returns an array of rows
   $statement->closeCursor();
   
-  return $results;
 	
 }
+
+function checkFavorite($sid, $listingID)
+{
+
+  global $db;
+  $query = "SELECT * FROM Favorite WHERE sid=:sid AND listingID=:listingID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->execute();
+
+  $results = $statement->fetchAll(); // returns an array of rows
+  $statement->closeCursor();
+   
+  return $results;
+  
+	
+}
+
+
 
 
 
