@@ -52,10 +52,6 @@ echo $selected;
 ?>
 
   
-<hr/>
-
-
-   
 </body>
 </html>
   
