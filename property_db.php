@@ -36,7 +36,7 @@ function getAllProperties()
 	
 }
 
-function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max, $house, $num_tenants, $parking, $utilities, $general_location, $street, $city, $state, $zipcode)
+function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max, $house, $num_tenants, $num_bedrooms, $num_bathrooms, $pets, $parking, $utilities, $general_location, $street, $city, $state, $zipcode)
 {
 
   global $db;
