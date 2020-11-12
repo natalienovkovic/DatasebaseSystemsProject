@@ -18,9 +18,6 @@ $waitlistNum = getPosition($sid, $listingID);
 $check = checkFavorite($sid, $listingID);
 
 
-
-
-
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if(!empty($_POST['action']) && ($_POST['action']=='Add to Waitlist'))
@@ -106,17 +103,21 @@ aside {
       
 <form name="mainForm" action="propertyview.php" method="post">
      
+  <?php if(empty($waitlistNum)){?>
   <input type="submit" value="Add to Waitlist" name="action" class="btn btn-dark" title="Add student to waitlist table" />
+  <?php }; ?>
 
-<?php foreach ($waitlistNum as $item){?>
+   <?php if(!empty($waitlistNum)){?>
   <input type="submit" value="Remove from Waitlist" name="action" class="btn btn-dark" title="Remove student from waitlist table" />
  <?php }; ?>
   
   <br></br>
 
-  <input type="submit" value="Add to Favorites" name="action" class="btn btn-dark" title="Add property to favorites" />
-  
-  <?php foreach ($check as $item){?>
+   <?php if(empty($check)){?>
+       <input type="submit" value="Add to Favorites" name="action" class="btn btn-dark" title="Add property to favorites" />
+  <?php }; ?>
+
+  <?php if(!empty($check)){?>
     <input type="submit" value="Remove from Favorites" name="action" class="btn btn-dark" title="Remove from Favorites" />
    <?php }; ?>
   
