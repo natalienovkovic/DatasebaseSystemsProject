@@ -44,7 +44,7 @@ function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max
  // $query = "INSERT INTO friends VALUES('" . $name . "','" . $major . "','" . $year .'")";
  // $statement = $db->query($query);
 
-  $query = "INSERT INTO Property VALUES(:listingID, :managerID, :move_in_date, :cost_min, :cost_max, :house, :num_tenants, :parking, :utilities, :general_location, :street, :city, :state, :zipcode)";
+  $query = "INSERT INTO Property VALUES(:listingID, :managerID, :move_in_date, :cost_min, :cost_max, :house, :num_tenants, :num_bedrooms, :num_bathrooms, :pets, :parking, :utilities, :general_location, :street, :city, :state, :zipcode)";
   $statement = $db->prepare($query);
   $statement->bindValue(':listingID', $listingID);
   $statement->bindValue(':managerID', $managerID);
@@ -53,6 +53,9 @@ function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max
   $statement->bindValue(':cost_max', $cost_max);
   $statement->bindValue(':house', $house);
   $statement->bindValue(':num_tenants', $num_tenants);
+  $statement->bindValue(':num_bedrooms', $num_bedrooms);	
+  $statement->bindValue(':num_bathrooms', $num_bathrooms);
+  $statement->bindValue(':pets', $pets);
   $statement->bindValue(':parking', $parking);
   $statement->bindValue(':utilities', $utilities);
   $statement->bindValue(':general_location', $general_location);
