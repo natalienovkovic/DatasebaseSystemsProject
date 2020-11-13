@@ -82,7 +82,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel='stylesheet' href='styles.css'>
-  <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
+  <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSraCv5uiN9OtQOm6QiXnFzKmkDSkytAlJ4ow&usqp=CAU" type="image/ico" />  
 </head>
 
 <body>
@@ -143,10 +143,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         <div class='form-group col-sm'>
           <select name='loc' class="custom-select" id="inputGroupSelect01">
             <option selected>Location</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4+</option>
+            <option value="JPA">JPA</option>
+            <option value="North Grounds">North Grounds</option>
+            <option value="Rugby Road/Corner">Rugby Road/Corner</option>
           </select>
         </div>
         <div class='form-group col-sm'>
@@ -173,26 +172,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         $d_bathNum = $_POST['baths'];
       if($_POST['loc'] != "Location")
         $d_loc = $_POST['loc'];
-      if($_POST['rent_amt'] != "Rent")
+      if($_POST['rent_amt'] != "Rent") {
         if(strpos($_POST['rent_amt'], "+") == false){
           list($d_rentMin, $d_rentMax) = explode('-', $_POST['rent_amt']);
-          // $d_rentMin == $rentArr[0];
-          // $d_rentMax == $rentArr[1];
         }
         else{
           list($d_rentMin, $d_rentMax) = explode('+', $_POST['rent_amt']);
-          // $d_rentMin == $rentArr[0];
-          // $d_rentMax == $rentArr[0];
         }
-        echo $d_bedNum . "<br>";
-        echo $d_bathNum . "<br>";
-        // echo $d_loc . "<br>";
-        // echo print_r(explode('-', $_POST['rent_amt'])) . "<br>";
-        // echo print_r($rentArr);
-        // echo $d_rentMin . "<br>";
-        // echo $d_rentMax . "<br>";
-      // print_r($_POST);
-      // $properties = getPropertySearch($d_bedNum, $d_bathNum, $d_loc, $d_rentMin, $d_rentMax);
+      }
+      if($_POST['beds'] == "Bedrooms" AND $_POST['baths'] == "Bathrooms" AND $_POST['loc'] == "Location" AND $_POST['rent_amt'] == "Rent")
+        $properties = getAllProperties();
+      else
+        $properties = getPropertySearch($d_bedNum, $d_bathNum, $d_loc, $d_rentMin, $d_rentMax);
     }
     ?>
     <div class='row' style='margin:auto;display: block; text-align:center;'>
@@ -217,6 +208,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 echo "No";
               ?>
             </p>
+            <div class='row'style='width: 75%;'>
+              <div class='col-sm'>
+                <p>Bedrooms:<?php echo $p['num_bedrooms'];?></p>
+              </div>
+              <div class='col-sm'>
+                <p>Bathrooms:<?php echo $p['num_bathrooms'];?></p>
+              </div>
+              <div class='col-sm'>
+                <p>Pets:<?php if($p['pets'] == 0)
+                echo "Yes";
+                else
+                  echo "No";
+                ?></p>
+              </div>
+            </div>
             <div class='row' style='width: 50%;'>
               <div class='col-sm' style='margin-right:0px;'>
                 <p>Parking Spots:<?php if($p['parking'] == 0) echo 'No'; else echo "Yes";?></p>

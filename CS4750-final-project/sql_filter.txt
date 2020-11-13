@@ -26,8 +26,6 @@ Pets
 SELECT * FROM Property WHERE pets == 0 
 SELECT * FROM Property WHERE pets == 1
 
-
-
 Rent: not too sure about this one 
 SELECT * FROM Property WHERE min_cost > 201 AND max_cost < 500 
 SELECT * FROM Property WHERE min_cost > 501 AND max_cost < 700 
