@@ -6,7 +6,6 @@ $properties = getAllProperties();
 $listingID = "";
 $managerID = "";
 $move_in_date = "";
-$cost_min = "";
 $cost_max = "";
 $house = "";
 $num_tenants = "";
@@ -31,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if(!empty($_POST['action']) && ($_POST['action']=='Add'))
   {
-   addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_min'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'], $_POST['num_bedrooms'],$_POST['num_bathrooms'],$_POST['pets'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
+   addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'], $_POST['num_bedrooms'],$_POST['num_bathrooms'],$_POST['pets'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
    $friends = getAllProperties();
  }
  elseif(!empty($_POST['action']) && ($_POST['action']=='Delete'))
@@ -46,7 +45,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
      $listingID = $p['listingID'];
      $managerID = $p['managerID'];
      $move_in_date = $p['move_in_date'];
-     $cost_min = $p['cost_min'];
      $cost_max = $p['cost_max'];
      $house = $p['house'];
      $num_tenants = $p['num_tenants'];
@@ -89,7 +87,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
   <!-- Navbar template from bootstrap website -->
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>Possible Name?</a>
+    <a class="navbar-brand" href="#" style='color: #84DCC6;'>C'Ville Student Housing</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -103,10 +101,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           <a class="nav-link" href="#">My Account</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
-        <button class="sl-btn" type="submit">Search</button>
-      </form>
     </div>
   </nav>
   <!-- End Navbar code -->
@@ -160,7 +154,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         </div>
       </div>
       <div class='row' style='margin:auto;display: block; text-align:center;'>
-        <input class="btn btn-primary" name='action' value='Search' type="submit" style='width: 45%;'/>
+        <input class="btn btn-primary" name='action' value='Search' type="submit" style='width: 45%;color: #000;border-color: #84DCC6;background-color: #84DCC6;'/>
       </div>
     </form>
     <!-- In the php below, the "d_" prefix denotes desired value from form -->
@@ -178,6 +172,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         }
         else{
           list($d_rentMin, $d_rentMax) = explode('+', $_POST['rent_amt']);
+          $d_rentMax = 1;
         }
       }
       if($_POST['beds'] == "Bedrooms" AND $_POST['baths'] == "Bathrooms" AND $_POST['loc'] == "Location" AND $_POST['rent_amt'] == "Rent")
@@ -188,6 +183,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     ?>
     <div class='row' style='margin:auto;display: block; text-align:center;'>
       <hr style='background-color:#343a40;border:none;height: 1px;'>
+      <?php if(count($properties) == 0 ){
+        echo "<h3>No listings found!</h3>";
+      }
+      ?>
     </div>
 
     <!-- Loop to display listings -->
@@ -231,20 +230,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 <p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
               </div>
             </div>
-            <?php if($p['cost_min'] != $p['cost_max']): ?>
-              <div class='row' style='width: 50%;'>
-                <div class='col-sm'>
-                  <p>Min Cost:$<?php echo $p['cost_min']; ?></p>
-                </div>
-                <div class='col-sm'>
-                  <p>Max Cost:$<?php echo $p['cost_max']; ?></p>
-                </div>
-              </div>
-              <?php else: ?>
-                <p>Cost:$<?php echo $p['cost_min']; ?></p>
-              <?php endif; ?>
+            <p>Cost:$<?php echo $p['cost_max']?></p>
               <div class='row'></div>
-              <button class='btn btn-primary' style='margin-top: 10px;'>More Info!</button> <!-- Need to implement this button to redirect to the property -->
+              <button class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'>More Info!</button> <!-- Need to implement this button to redirect to the property -->
             </div>
           </div>
         </div>
