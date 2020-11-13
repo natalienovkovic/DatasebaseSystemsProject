@@ -107,7 +107,6 @@ function deleteProperty($listingID)
 	
 }
 
-
 function addStudentAccount($username, $passwrd){
   
   global $db;
@@ -132,8 +131,6 @@ function addManagerAccount($username, $passwrd){
   $statement->closeCursor(); //release hold on this connection
   
 }
-
-
 // Need to check the validity of this function
 function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $cost_min, $cost_max){
 
@@ -212,5 +209,4 @@ function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $co
 
 //  return $results;
 // }
-
 ?>
