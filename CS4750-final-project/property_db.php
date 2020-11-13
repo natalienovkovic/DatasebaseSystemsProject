@@ -107,6 +107,22 @@ function deleteProperty($listingID)
 	
 }
 
+// Need to check the validity of this function
+function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $cost_min, $cost_max){
 
+  global $db;
+  $query = "SELECT * FROM Property WHERE ($num_bedrooms=:num_bedrooms) OR ($num_bathrooms=:num_bathrooms) OR ($general_location=:general_location) OR ($cost_min>=:cost_min AND $cost_max=:cost_max)";
+  // echo $num_bedrooms;
+  // echo $num_bathrooms;
+  // echo $general_location;
+  // echo $cost_min;
+  // echo $cost_max;
+  $statement = $db->prepare($query);
+  $statement->execute();
 
+  $results = $statement->fetchAll(); // returns an array of rows
+  $statement->closeCursor();
+
+ return $results;
+}
 ?>

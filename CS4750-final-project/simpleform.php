@@ -10,6 +10,9 @@ $cost_min = "";
 $cost_max = "";
 $house = "";
 $num_tenants = "";
+$num_bedrooms = "";
+$num_bathrooms = "";
+$pets = "";
 $parking = "";
 $utilities = "";
 $general_location = "";
@@ -17,45 +20,54 @@ $street = "";
 $city = "";
 $state = ""; 
 $zipcode = "";
+$d_bedNum = "";
+$d_bathNum = "";
+$d_loc = "";
+$d_rentMin = "";
+$d_rentMax = "";
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if(!empty($_POST['action']) && ($_POST['action']=='Add'))
-	{
-     addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_min'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
-     $friends = getAllProperties();
-	}
-  elseif(!empty($_POST['action']) && ($_POST['action']=='Delete'))
-	{
-	deleteProperty($_POST['property_to_delete']);
-        $properties = getAllProperties();
-	}
-  elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
-	{
-	$propertyToUpdate = getPropertyInfo_by_id($_POST['property_to_update']);
-	 foreach ($propertyToUpdate as $p):
-         $listingID = $p['listingID'];
-         $managerID = $p['managerID'];
-         $move_in_date = $p['move_in_date'];
-	 $cost_min = $p['cost_min'];
-	 $cost_max = $p['cost_max'];
-	 $house = $p['house'];
-	 $num_tenants = $p['num_tenants'];
-	 $parking = $p['parking'];
-	 $utilities = $p['utilities'];
-	 $general_location = $p['general_location'];
-	 $street = $p['street'];
-	 $city = $p['city'];
-	 $state = $p['state']; 
-	 $zipcode = $p['zipcode'];
-	endforeach;
-        
-        }
-  elseif(!empty($_POST['action']) && ($_POST['action']=='Confirm update'))
-	{
-     updateProperty($_POST['listingID'], $_POST['num_tenants']);
-     $properties = getAllProperties();
-	}
+  {
+   addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_min'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'], $_POST['num_bedrooms'],$_POST['num_bathrooms'],$_POST['pets'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
+   $friends = getAllProperties();
+ }
+ elseif(!empty($_POST['action']) && ($_POST['action']=='Delete'))
+ {
+   deleteProperty($_POST['property_to_delete']);
+   $properties = getAllProperties();
+ }
+ elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
+ {
+   $propertyToUpdate = getPropertyInfo_by_id($_POST['property_to_update']);
+   foreach ($propertyToUpdate as $p):
+     $listingID = $p['listingID'];
+     $managerID = $p['managerID'];
+     $move_in_date = $p['move_in_date'];
+     $cost_min = $p['cost_min'];
+     $cost_max = $p['cost_max'];
+     $house = $p['house'];
+     $num_tenants = $p['num_tenants'];
+     $num_bedrooms = $p['num_bedrooms'];
+     $num_bathrooms = $p['num_bathrooms'];
+     $pets = $p['pets'];
+     $parking = $p['parking'];
+     $utilities = $p['utilities'];
+     $general_location = $p['general_location'];
+     $street = $p['street'];
+     $city = $p['city'];
+     $state = $p['state']; 
+     $zipcode = $p['zipcode'];
+   endforeach;
+
+ }
+ elseif(!empty($_POST['action']) && ($_POST['action']=='Confirm update'))
+ {
+   updateProperty($_POST['listingID'], $_POST['num_tenants']);
+   $properties = getAllProperties();
+ }
 }
 ?>
 
@@ -66,139 +78,172 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="your name">
   <meta name="description" content="include some description about your page">      
-  <title>DB interfacing</title>
+  <title>Listings</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel='stylesheet' href='styles.css'>
   <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
 </head>
 
 <body>
-<div class="container">
 
-<h1>Property</h1>
+  <!-- Navbar template from bootstrap website -->
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" style='color: #84DCC6;'>Possible Name?</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<!-- <form action="formprocessing.php" method="post">  -->
-<form name="mainForm" action="simpleform.php" method="post">
-  <div class="form-group">
-    ListingID <?php echo $listingID ?>:
-    <input type="text" class="form-control" name="listingID" value="<?php echo $listingID ?>" required />        
-  </div>  
-  <div class="form-group">
-    ManagerID:
-    <input type="text" class="form-control" name="managerID" value="<?php echo $managerID ?>" required /> 
-  </div> 
-
-<div class="form-group">
-    Move in Date:
-    <input type="text" class="form-control" name="move_in_date" value="<?php echo $move_in_date ?>" required />        
-  </div>  
-  <div class="form-group">
-    Min Cost:
-    <input type="text" class="form-control" name="cost_min" value="<?php echo $cost_min ?>" required /> 
-  </div>  
-  <div class="form-group">
-    Max Cost:
-    <input type="text" class="form-control" name="cost_max" value="<?php echo $cost_max ?>" />        
-  </div> 
- <div class="form-group">
-    House:
-    <input type="text" class="form-control" name="house" value="<?php echo $house ?>" required />        
-  </div>
- <div class="form-group">
-    Number of tenants:
-    <input type="text" class="form-control" name="num_tenants" value="<?php echo $num_tenants ?>"  required/>        
-  </div>  
- <div class="form-group">
-    Parking:
-    <input type="text" class="form-control" name="parking" value="<?php echo $parking ?>"  />        
-  </div> 
- <div class="form-group">
-    Utilities:
-    <input type="text" class="form-control" name="utilities" value="<?php echo $utilities ?>" />        
-  </div> 
- <div class="form-group">
-    General Location:
-    <input type="text" class="form-control" name="general_location" value="<?php echo $general_location ?>" required />        
-  </div>
- <div class="form-group">
-    Street:
-    <input type="text" class="form-control" name="street" value="<?php echo $street ?>" required  />        
-  </div>  
- <div class="form-group">
-    City:
-    <input type="text" class="form-control" name="city" value="<?php echo $city ?>" required />        
-  </div> 
- <div class="form-group">
-    State:
-    <input type="text" class="form-control" name="state" value="<?php echo $state ?>" required  />        
-  </div> 
- <div class="form-group">
-    Zipcode:
-    <input type="text" class="form-control" name="zipcode" value="<?php echo $zipcode ?>" required/>        
-  </div> 
-     
-  <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a property into a properties table" />
-  <input type="submit" value="Confirm update" name="action" class="btn btn-dark" title="Confirm update a property" />
-  
-</form>  
-
-  
-<hr/>
-<h2>List of Properties</h2>
-<div style="width:100%; overflow:auto;">
-<table class="w3-table w3-bordered w3-card-4 center" style="overflow:auto">
-  <thead>
-  <tr style="background-color:#B0B0B0">
-    <th width="25%">ListingID</th>        
-    <th width="10%">ManagerID</th>        
-    <th width="25%">Move in date</th> 
-    <th width="10%">Min Cost</th>
-    <th width="10%">Max Cost</th> 
-    <th width="25%">House</th>        
-    <th width="25%"># Tenants</th>        
-    <th width="25%">Parking</th> 
-    <th width="10%">Utilites</th>
-    <th width="10%">General Loc</th>
-    <th width="25%">Street</th>        
-    <th width="25%">City</th>        
-    <th width="25%">State</th> 
-    <th width="10%">Zipcode</th>
-  </tr>
-  </thead>
-  <?php foreach ($properties as $item): ?>
-  <tr>
-    <td><?php echo $item['listingID']; ?></td>
-    <td><?php echo $item['managerID']; ?></td>        
-    <td><?php echo $item['move_in_date']; ?></td> 
-    <td><?php echo $item['cost_min']; ?></td>
-    <td><?php echo $item['cost_max']; ?></td> 
-    <td><?php echo $item['house']; ?></td> 
-    <td><?php echo $item['num_tenants']; ?></td> 
-    <td><?php echo $item['parking']; ?></td>  
-    <td><?php echo $item['utilities']; ?></td>
-    <td><?php echo $item['general_location']; ?></td>
-    <td><?php echo $item['street']; ?></td> 
-    <td><?php echo $item['city']; ?></td>
-    <td><?php echo $item['state']; ?></td>
-    <td><?php echo $item['zipcode']; ?></td>
-    <td>
-      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        <input type="submit" value="Update" name="action" class="btn btn-primary" title="Update the record" />             
-        <input type="hidden" name="property_to_update" value="<?php echo $item['listingID'] ?>" />
-      </form> 
-    </td>                        
-    <td>
-      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        <input type="submit" value="Delete" name="action" class="btn btn-danger" title="Permanently delete the record" />      
-        <input type="hidden" name="property_to_delete" value="<?php echo $item['listingID'] ?>" />
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">My Account</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
+        <button class="sl-btn" type="submit">Search</button>
       </form>
-    </td>                                              
-  </tr>
-<?php endforeach; ?>
-</table>
-</div>
-        
-</div>    
-</body>
-</html>
-  
+    </div>
+  </nav>
+  <!-- End Navbar code -->
+
+  <!-- Header -->
+  <div class="container">
+    <h2>Property Listings</h2>
+  </div>
+
+  <!-- Search bar -->
+  <div class="container">
+    <hr style='background-color:#343a40;border:none;height: 1px;margin-bottom:10px;'>
+    <h4 style='margin-top: 0px;'>Search listings</h4>
+    <div class="row mb-3">
+      <form action='' name='searchform' method='post' style='display:contents;'>
+        <div class='form-group col-sm'>
+          <select name='beds' class="custom-select" id="inputGroupSelect01">
+            <option selected>Bedrooms</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <div class='form-group col-sm'>
+          <select name='baths' class="custom-select" id="inputGroupSelect01">
+            <option selected>Bathrooms</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <div class='form-group col-sm'>
+          <select name='loc' class="custom-select" id="inputGroupSelect01">
+            <option selected>Location</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <div class='form-group col-sm'>
+          <select name='rent_amt' class="custom-select" id="inputGroupSelect01">
+            <option selected>Rent</option>
+            <option value="1-275">1-275</option>
+            <option value="276-500">276-500</option>
+            <option value="501-750">501-750</option>
+            <option value="750-1000">750-1000</option>
+            <option value="1001+">1001+</option>
+          </select>
+        </div>
+      </div>
+      <div class='row' style='margin:auto;display: block; text-align:center;'>
+        <input class="btn btn-primary" name='action' value='Search' type="submit" style='width: 45%;'/>
+      </div>
+    </form>
+    <!-- In the php below, the "d_" prefix denotes desired value from form -->
+    <?php 
+    if(!empty($_POST['action']) && ($_POST['action'] == 'Search')){
+      if($_POST['beds'] != "Bedrooms")
+        $d_bedNum = $_POST['beds'];
+      if($_POST['baths'] != "Bathrooms")
+        $d_bathNum = $_POST['baths'];
+      if($_POST['loc'] != "Location")
+        $d_loc = $_POST['loc'];
+      if($_POST['rent_amt'] != "Rent")
+        if(strpos($_POST['rent_amt'], "+") == false){
+          list($d_rentMin, $d_rentMax) = explode('-', $_POST['rent_amt']);
+          // $d_rentMin == $rentArr[0];
+          // $d_rentMax == $rentArr[1];
+        }
+        else{
+          list($d_rentMin, $d_rentMax) = explode('+', $_POST['rent_amt']);
+          // $d_rentMin == $rentArr[0];
+          // $d_rentMax == $rentArr[0];
+        }
+        echo $d_bedNum . "<br>";
+        echo $d_bathNum . "<br>";
+        // echo $d_loc . "<br>";
+        // echo print_r(explode('-', $_POST['rent_amt'])) . "<br>";
+        // echo print_r($rentArr);
+        // echo $d_rentMin . "<br>";
+        // echo $d_rentMax . "<br>";
+      // print_r($_POST);
+      // $properties = getPropertySearch($d_bedNum, $d_bathNum, $d_loc, $d_rentMin, $d_rentMax);
+    }
+    ?>
+    <div class='row' style='margin:auto;display: block; text-align:center;'>
+      <hr style='background-color:#343a40;border:none;height: 1px;'>
+    </div>
+
+    <!-- Loop to display listings -->
+    <div class='container'>
+      <?php foreach ($properties as $p): ?>
+        <div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
+          <div class='row'>
+            <div class='col-4'>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
+            </div>
+            <div class="col-8">
+              <p>General Location:<?php echo $p['general_location']; ?></p>
+              <p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
+              <p>Move-in:<?php echo $p['move_in_date']; ?></p>
+              <p>House:<?php if($p['house'] == 0)
+              echo "Yes";
+              else
+                echo "No";
+              ?>
+            </p>
+            <div class='row' style='width: 50%;'>
+              <div class='col-sm' style='margin-right:0px;'>
+                <p>Parking Spots:<?php if($p['parking'] == 0) echo 'No'; else echo "Yes";?></p>
+              </div>
+              <div class='col-sm' style='padding:0px;'>
+                <p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
+              </div>
+            </div>
+            <?php if($p['cost_min'] != $p['cost_max']): ?>
+              <div class='row' style='width: 50%;'>
+                <div class='col-sm'>
+                  <p>Min Cost:$<?php echo $p['cost_min']; ?></p>
+                </div>
+                <div class='col-sm'>
+                  <p>Max Cost:$<?php echo $p['cost_max']; ?></p>
+                </div>
+              </div>
+              <?php else: ?>
+                <p>Cost:$<?php echo $p['cost_min']; ?></p>
+              <?php endif; ?>
+              <div class='row'></div>
+              <button class='btn btn-primary' style='margin-top: 10px;'>More Info!</button> <!-- Need to implement this button to redirect to the property -->
+            </div>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+
+  </body>
+  </html>
