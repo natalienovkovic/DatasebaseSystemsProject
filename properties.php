@@ -41,7 +41,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  }
  elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
  {
-   $propertyToUpdate = getPropertyInfo_by_id($_POST['property_to_update']);
+
+   $propertyToUpdate = getPropertyInfo($_POST['property_to_update']);
+
    foreach ($propertyToUpdate as $p):
      $listingID = $p['listingID'];
      $managerID = $p['managerID'];

@@ -29,7 +29,6 @@ function addToWaitlist($sid, $listingID)
   $statement->bindValue(':listingID', $listingID);
   $statement->execute();
 
-  $results = $statement->fetchAll(); // returns an array of rows
   $statement->closeCursor();
 	
 }
