@@ -1,13 +1,13 @@
 <?php
 require('connectdb.php');
 require('contact_db.php');
-$sid = "ct4wa";             // need to be passed from previous page
-$managerID = "1234";	   // need to be passed from previous page
+$sid = $_POST['sid'];            // need to be passed from previous page
+$managerID = $_POST['managerID'];   // need to be passed from previous page
 $message = "";
 
 $messages = getAllMessages($sid);
 $compName = getName($managerID);
-$companies = getCompanyNames();
+//$companies = getCompanyNames();
 
 
 
@@ -38,12 +38,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <div class="container">
 
 <h2>Message to:
-
-<?php foreach ($compName as $item): ?>
+ <?php foreach ($compName as $item)
  
-    <?php echo $item['companyName']; ?>                                            
+    echo $item['companyName'];                                            
 
-<?php endforeach; ?>
+?>
+
+
  </h2> 
 
 
@@ -72,9 +73,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <?php foreach ($messages as $item): ?>
   <tr>
     <td><?php echo $item['companyName']; ?></td> 
-    <td><?php echo $item['message']; ?></td>   
-                  
-                                               
+    <td><?php echo $item['message']; ?></td>                                           
   </tr>
 <?php endforeach; ?>
 </table>

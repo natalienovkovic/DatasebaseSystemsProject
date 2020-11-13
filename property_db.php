@@ -65,7 +65,7 @@ function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max
   
 }
    
-function getPropertyInfo_by_id($listingID)
+function getPropertyInfo($listingID)
 {
   global $db; 
   $query = "SELECT * FROM Property WHERE listingID=:listingID";
@@ -89,10 +89,7 @@ function updateProperty($listingID, $num_tenants)
   $statement->bindValue(':listingID', $listingID);
   $statement->bindValue(':num_tenants', $num_tenants);
   $statement->execute(); // run query
-  $statement->closeCursor(); //release hold on this connection
-
-	
-	
+  $statement->closeCursor(); //release hold on this connection		
 }
 
 function deleteProperty($listingID)
@@ -106,6 +103,7 @@ function deleteProperty($listingID)
 	
 	
 }
+
 
 function addStudentAccount($username, $passwrd){
   
@@ -131,4 +129,5 @@ function addManagerAccount($username, $passwrd){
   $statement->closeCursor(); //release hold on this connection
   
 }
+
 ?>

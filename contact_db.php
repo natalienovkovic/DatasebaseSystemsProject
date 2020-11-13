@@ -69,14 +69,27 @@ function getManager_by_listing($listingID)
 function getCompanyNames()
 {
   global $db; 
-  $query = "SELECT DISTINCT companyName FROM propertymanager";
+  $query = "SELECT DISTINCT companyName FROM PropertyManager";
   $statement = $db->prepare($query);
   $statement->execute(); // run query
   $results = $statement->fetchAll();
   $statement->closeCursor(); //release hold on this connection
  
   return $results;
+	
+}
 
+function getName($managerID)
+{
+  global $db; 
+  $query = "SELECT * FROM PropertyManager WHERE managerID=:managerID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':managerID', $managerID);
+  $statement->execute(); // run query
+  $results = $statement->fetchAll();
+  $statement->closeCursor(); //release hold on this connection
+ 
+  return $results;
 	
 }
 
