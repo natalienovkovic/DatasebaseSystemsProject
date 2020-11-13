@@ -36,7 +36,7 @@ function getAllProperties()
 	
 }
 
-function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max, $house, $num_tenants, $parking, $utilities, $general_location, $street, $city, $state, $zipcode)
+function addProperty($listingID, $managerID, $move_in_date, $cost_max, $house, $num_tenants, $num_bedrooms, $num_bathrooms, $pets, $parking, $utilities, $general_location, $street, $city, $state, $zipcode)
 {
 
   global $db;
@@ -44,15 +44,17 @@ function addProperty($listingID, $managerID, $move_in_date, $cost_min, $cost_max
  // $query = "INSERT INTO friends VALUES('" . $name . "','" . $major . "','" . $year .'")";
  // $statement = $db->query($query);
 
-  $query = "INSERT INTO Property VALUES(:listingID, :managerID, :move_in_date, :cost_min, :cost_max, :house, :num_tenants, :parking, :utilities, :general_location, :street, :city, :state, :zipcode)";
+  $query = "INSERT INTO Property VALUES(:listingID, :managerID, :move_in_date, :cost_max, :house, :num_tenants, :num_bedrooms, :num_bathrooms, :pets, :parking, :utilities, :general_location, :street, :city, :state, :zipcode)";
   $statement = $db->prepare($query);
   $statement->bindValue(':listingID', $listingID);
   $statement->bindValue(':managerID', $managerID);
   $statement->bindValue(':move_in_date', $move_in_date);
-  $statement->bindValue(':cost_min', $cost_min);
   $statement->bindValue(':cost_max', $cost_max);
   $statement->bindValue(':house', $house);
   $statement->bindValue(':num_tenants', $num_tenants);
+  $statement->bindValue(':num_bedrooms', $num_bedrooms);
+  $statement->bindValue(':num_bathrooms', $num_bathrooms);
+  $statement->bindValue(':pets', $pets);
   $statement->bindValue(':parking', $parking);
   $statement->bindValue(':utilities', $utilities);
   $statement->bindValue(':general_location', $general_location);
@@ -129,5 +131,85 @@ function addManagerAccount($username, $passwrd){
   $statement->closeCursor(); //release hold on this connection
   
 }
+
+
+// Need to check the validity of this function
+function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $cost_min, $cost_max){
+
+  global $db;
+  if($num_bedrooms == 4)
+    $query = "SELECT * FROM Property WHERE (num_bedrooms>=4:num_bedrooms) OR (num_bathrooms=:num_bathrooms) OR (general_location=:general_location) OR (cost_min>=:cost_min AND cost_max<=:cost_max)";
+  if($num_bathrooms == 4)
+    $query = "SELECT * FROM Property WHERE (num_bedrooms=:num_bedrooms) OR (num_bathrooms>=:num_bathrooms) OR (general_location=:general_location) OR (cost_min>=:cost_min AND cost_max<=:cost_max)";
+  if($cost_min == 1001)
+    $query = "SELECT * FROM Property WHERE (num_bedrooms=:num_bedrooms) OR (num_bathrooms=:num_bathrooms) OR (general_location=:general_location) OR (cost_min>:cost_min AND cost_max>:cost_max)";
+  else
+    $query = "SELECT * FROM Property WHERE (num_bedrooms=:num_bedrooms) OR (num_bathrooms=:num_bathrooms) OR (general_location=:general_location) OR (cost_min>=:cost_min AND cost_max<=:cost_max)";
+  // echo $num_bedrooms;
+  // echo $num_bathrooms;
+  // echo $general_location;
+  // echo $cost_min;
+  // echo $cost_max;
+  $statement = $db->prepare($query);
+  $statement->bindValue(':num_bedrooms', $num_bedrooms);
+  $statement->bindValue(':num_bathrooms', $num_bathrooms);
+  $statement->bindValue(':general_location', $general_location);
+  $statement->bindValue(':cost_min', $cost_min);
+  $statement->bindValue(':cost_max', $cost_max);
+  $statement->execute();
+
+  $results = $statement->fetchAll(); // returns an array of rows
+  $statement->closeCursor();
+
+ return $results;
+}
+
+// function getPropertyByBedrooms($num_bedrooms){
+//   global $db;
+//   $query = "SELECT * FROM Property WHERE num_bedrooms=:nu";
+//   $statement = $db->prepare($query);
+//   $statement->execute();
+
+//   $results = $statement->fetchAll(); // returns an array of rows
+//   $statement->closeCursor();
+
+//  return $results;
+// }
+
+// function getPropertyByBathrooms($num_bathrooms){
+//   global $db;
+//   $query = "SELECT * FROM Property WHERE num_bathrooms=:num_bathrooms";
+//   $statement = $db->prepare($query);
+//   $statement->execute();
+
+//   $results = $statement->fetchAll(); // returns an array of rows
+//   $statement->closeCursor();
+
+//  return $results;
+// }
+
+// function getPropertyByLocation($general_location){
+//   global $db;
+//   $query = "SELECT * FROM Property";
+//   $statement = $db->prepare($query);
+//   $statement->execute();
+
+//   $results = $statement->fetchAll(); // returns an array of rows
+//   $statement->closeCursor();
+
+//  return $results;
+// }
+
+// function getPropertyByRent($cost_min, $cost_max){
+//   global $db;
+//   $query = "SELECT * FROM Property";
+//   $statement = $db->prepare($query);
+//   $statement->execute();
+
+//   $results = $statement->fetchAll(); // returns an array of rows
+//   $statement->closeCursor();
+
+//  return $results;
+// }
 
 ?>

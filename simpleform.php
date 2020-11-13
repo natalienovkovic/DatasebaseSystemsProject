@@ -10,6 +10,9 @@ $cost_min = "";
 $cost_max = "";
 $house = "";
 $num_tenants = "";
+$num_bedrooms = "";
+$num_bathrooms = "";
+$pets = "";
 $parking = "";
 $utilities = "";
 $general_location = "";
@@ -21,8 +24,10 @@ $zipcode = "";
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if(!empty($_POST['action']) && ($_POST['action']=='Add'))
+
+
 	{
-     addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_min'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
+     addProperty($_POST['listingID'], $_POST['managerID'], $_POST['move_in_date'], $_POST['cost_max'], $_POST['house'], $_POST['num_tenants'],$_POST['num_bedrooms'], $_POST['num_bathrooms'], $_POST['pets'], $_POST['parking'], $_POST['utilities'], $_POST['general_location'], $_POST['street'], $_POST['city'], $_POST['state'], $_POST['zipcode']);
      $friends = getAllProperties();
 	}
   elseif(!empty($_POST['action']) && ($_POST['action']=='Delete'))
@@ -32,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 	}
   elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
 	{
-	$propertyToUpdate = getPropertyInfo_by_id($_POST['property_to_update']);
+	$propertyToUpdate = getPropertyInfo($_POST['property_to_update']);
 	 foreach ($propertyToUpdate as $p):
          $listingID = $p['listingID'];
          $managerID = $p['managerID'];
@@ -93,13 +98,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     <input type="text" class="form-control" name="move_in_date" value="<?php echo $move_in_date ?>" required />        
   </div>  
   <div class="form-group">
-    Min Cost:
-    <input type="text" class="form-control" name="cost_min" value="<?php echo $cost_min ?>" required /> 
+    Cost:
+    <input type="text" class="form-control" name="cost_max" value="<?php echo $cost_max ?>" required /> 
   </div>  
-  <div class="form-group">
-    Max Cost:
-    <input type="text" class="form-control" name="cost_max" value="<?php echo $cost_max ?>" />        
-  </div> 
  <div class="form-group">
     House:
     <input type="text" class="form-control" name="house" value="<?php echo $house ?>" required />        
@@ -107,6 +108,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  <div class="form-group">
     Number of tenants:
     <input type="text" class="form-control" name="num_tenants" value="<?php echo $num_tenants ?>"  required/>        
+  </div>  
+ <div class="form-group">
+ Number of bedrooms:
+    <input type="text" class="form-control" name="num_bedrooms" value="<?php echo $num_bedrooms ?>"  required/>        
+  </div>  
+ <div class="form-group">
+ Number of bathrooms:
+    <input type="text" class="form-control" name="num_bathrooms" value="<?php echo $num_bathrooms ?>"  required/>        
+  </div>  
+ <div class="form-group">
+ Pets:
+    <input type="text" class="form-control" name="pets" value="<?php echo $pets ?>"  required/>        
   </div>  
  <div class="form-group">
     Parking:
@@ -152,10 +165,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     <th width="25%">ListingID</th>        
     <th width="10%">ManagerID</th>        
     <th width="25%">Move in date</th> 
-    <th width="10%">Min Cost</th>
     <th width="10%">Max Cost</th> 
     <th width="25%">House</th>        
-    <th width="25%"># Tenants</th>        
+    <th width="10%"># Tenants</th>    
+    <th width="10%"># Bedrooms</th>  
+    <th width="10%"># Bathrooms</th>  
+    <th width="10%">Pets</th>   
     <th width="25%">Parking</th> 
     <th width="10%">Utilites</th>
     <th width="10%">General Loc</th>
@@ -170,10 +185,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     <td><?php echo $item['listingID']; ?></td>
     <td><?php echo $item['managerID']; ?></td>        
     <td><?php echo $item['move_in_date']; ?></td> 
-    <td><?php echo $item['cost_min']; ?></td>
     <td><?php echo $item['cost_max']; ?></td> 
     <td><?php echo $item['house']; ?></td> 
     <td><?php echo $item['num_tenants']; ?></td> 
+    <td><?php echo $item['num_bedrooms']; ?></td>
+    <td><?php echo $item['num_bathrooms']; ?></td>
+    <td><?php echo $item['pets']; ?></td>
     <td><?php echo $item['parking']; ?></td>  
     <td><?php echo $item['utilities']; ?></td>
     <td><?php echo $item['general_location']; ?></td>
