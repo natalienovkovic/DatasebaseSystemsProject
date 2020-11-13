@@ -1,0 +1,40 @@
+SQL COMMANDS FOR FILTER: 
+
+Bedrooms 
+SELECT * FROM Property WHERE num_bedrooms = 1
+SELECT * FROM Property WHERE num_bedrooms = 2
+SELECT * FROM Property WHERE num_bedrooms = 3 
+SELECT * FROM Property WHERE num_bedrooms > 3 
+
+Bathrooms 
+SELECT * FROM Property WHERE num_bathrooms = 1
+SELECT * FROM Property WHERE num_bathrooms = 1.5 
+SELECT * FROM Property WHERE num_bathrooms = 2
+SELECT * FROM Property WHERE num_bathrooms = 2.5 
+SELECT * FROM Property WHERE num_bathrooms = 3 
+SELECT * FROM Property WHERE num_bathrooms = 3.5 
+SELECT * FROM Property WHERE num_bathrooms > 3 
+
+
+Location 
+SELECT * FROM Property WHERE general_location = 'JPA' 
+SELECT * FROM Property WHERE general_location = 'North Grounds' 
+SELECT * FROM Property WHERE general_location = 'Rugby Road/Corner' 
+
+
+Pets 
+SELECT * FROM Property WHERE pets == 0 
+SELECT * FROM Property WHERE pets == 1
+
+
+
+Rent: not too sure about this one 
+SELECT * FROM Property WHERE min_cost > 201 AND max_cost < 500 
+SELECT * FROM Property WHERE min_cost > 501 AND max_cost < 700 
+SELECT * FROM Property WHERE min_cost > 701 AND max_cost < 900
+SELECT * FROM Property WHERE min_cost > 901 AND max_cost < 1200
+SELECT * FROM Property WHERE min_cost > 1201 AND max_cost < 1500
+SELECT * FROM Property WHERE min_cost > 2001 AND max_cost < 2500 
+SELECT * FROM Property WHERE min_cost > 2501 AND max_cost < 3000
+SELECT * FROM Property WHERE min_cost > 3001 AND max_cost < 4000 
+SELECT * FROM Property WHERE min_cost > 4001 AND max_cost < 4001  
