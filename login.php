@@ -3,6 +3,31 @@
     require('property_db.php');
     $username = "";
     $password = "";
+    $mainpage = "register.php"; 
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        if (!empty($_POST['submit'])) {
+            
+            if($_POST['submit'] == 'student'){
+                if(validate_student_password($username, $password) == 1){
+                    //goto property page
+                    header("Location: http://cs.virginia.edu/~era9dv/files/register.php");
+                    echo "<span class='msg'>Username and password match our record</span> <br/>";
+                }
+            }   
+            if($_POST['submit'] == 'manager'){
+                if(validate_manager_password($username, $password) == 1){
+                    //goto property page
+                    header("Location:  http://cs.virginia.edu/~era9dv/files/register.php");
+                    echo "<span class='msg'>Username and password match our record1</span> <br/>";
+                }
+            }
+        } 
+}  
+
 ?>
 
 <!DOCTYPE html>
@@ -27,25 +52,25 @@
             <form name="mainForm" action="login.php" method="post">
                 <div class="form-group">
                     Username:
-                    <input type="text" class="form-control" name="username" placeholder="username" value="<?php echo $username ?>" required />        
+                    <input type="text" class="form-control" name="username" placeholder="username"  required />        
                 </div>  
                 <div class="form-group">
                     Password:
-                    <input type="password" class="form-control" name="password" placeholder="password" value="<?php echo $password ?>" required /> 
+                    <input type="password" class="form-control" name="password" placeholder="password"  required /> 
                 </div> 
 
                 <!-- buttons -->
                 <input 
                     type="submit" 
-                    value="Student Login" 
-                    name="action" 
+                    value="student" 
+                    name="submit" 
                     class="btn btn-dark" 
                     title="validate student credentials" 
                 />
                 <input 
                     type="submit" 
-                    value="Manager Login" 
-                    name="action" 
+                    value="manager" 
+                    name="submit" 
                     class="btn btn-dark" 
                     title="validate manager credentials" 
                 />

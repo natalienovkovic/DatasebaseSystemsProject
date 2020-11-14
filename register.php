@@ -1,21 +1,61 @@
 <?php
     require('connectdb.php');
     require('property_db.php');
-    $username = "";
-    $password = "";
-    $acctype = $_POST['acctype'];
+    $acctype = '';
+    $username = '';
+    $pwd = '';
+
+    
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+        $acctype = $_POST['acctype'];
+
+        $username = $_POST['username'];
+        $pwd = $_POST['password'];
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $email = $_POST['email'];
+        
+
+        $pwd = htmlspecialchars($pwd); 
+        //$pwd_hashed = password_hash($pwd, PASSWORD_DEFAULT);
+        //echo "password_hash (PASSWORD_DEFAULT) =" . password_hash($pwd, PASSWORD_DEFAULT) . "<br/><br/>";
+        
+
         if (isset($_POST['submit'])) {
             if(isset($_POST['radio'])){
                 if($_POST['radio'] == 'student'){
-                    addStudentAccount($_POST['username'], $_POST['password']);
+                    addStudentAccount($username, $pwd);
+                    addStudentInfo($username, $fname, $lname, $email);
+                    // if(verifyStudentRegistered($username) == 1){
+                    //     echo "Hi, you have successfully Registered as a Student";
+                    // }
+                    // else{
+                    //     echo "problem registering";
+                    // }
                 }
                 if($_POST['radio'] == 'manager'){
-                    addManagerAccount($_POST['username'], $_POST['password']);
+                    if(!isset($_POST['companyname']) || !isset($_POST['phone'])){
+                        alert("please enter company name and phone number");
+                    }
+                    else{
+                        $company = $_POST['companyname'];
+                        $phone = $_POST['phone'];
+                        addManagerAccount($username, $pwd);
+                        addManagerInfo($username, $company, $phone, $email);
+                    }
+                    // if(verifyManagerRegistered($username) == 1){
+                    //     echo "Hi, you have successfully Registered as a Manager";
+                    // }
+                    // else{
+                    //     echo "problem registering";
+                    // }
                 }
             }
         }
+
+        
     }
             
 ?>
@@ -32,7 +72,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
     </head>
-
+        
     <body>
         <div class="container">
 
@@ -41,13 +81,33 @@
             <!-- <form action="formprocessing.php" method="post">  -->
             <form name="mainForm" action="register.php" method="post">
                 <div class="form-group">
+                    First Name:
+                    <input type = "text" class= "form-control" name ="fname" required />
+                </div>
+                <div class="form-group">
+                    Last Name:
+                    <input type = "text" class= "form-control" name ="lname" required />
+                </div>
+                <div class="form-group">
                     Username:
-                    <input type="text" class="form-control" name="username" placeholder="username" value="<?php echo $username ?>" required />        
+                    <input type="text" class="form-control" name="username" placeholder="username"  required />        
                 </div>  
                 <div class="form-group">
                     Password:
-                    <input type="password" class="form-control" name="password" placeholder="password" value="<?php echo $password ?>" required /> 
+                    <input type="password" class="form-control" name="password" placeholder="password"  required /> 
                 </div> 
+                <div class="form-group">
+                    Email:
+                    <input type="email" class="form-control" name="email" placeholder="examp@virginia.edu" required />
+                </div>
+                <div class="form-group">
+                    Company Name(only required for managers):
+                    <input type="text" class = "form-control" name="companyname" />
+                </div>
+                <div class="form-group">
+                    Phone Number(no spaces --required for managers):
+                    <input type="text" class = "form-control" name="phone" placeholder="1112223333" />
+                </div>
                 <div class = "form-group">
                     Account Type:<br>
                     <input type="radio" id="manager" name="radio" value="manager" required>
@@ -61,6 +121,7 @@
                     name="submit" 
                     class="btn btn-dark" 
                     title="create account"
+                    onclick = "myfunction()"
                 /> 
 
                 <!-- buttons -->
