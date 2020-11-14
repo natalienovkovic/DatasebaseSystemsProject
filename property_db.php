@@ -118,6 +118,7 @@ function addStudentAccount($username, $passwrd){
   $statement->closeCursor(); //release hold on this connection
   
 }
+
 function addManagerAccount($username, $passwrd){
   
   global $db;

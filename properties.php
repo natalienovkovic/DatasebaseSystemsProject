@@ -201,10 +201,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               <p>General Location:<?php echo $p['general_location']; ?></p>
               <p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
               <p>Move-in:<?php echo $p['move_in_date']; ?></p>
-              <p>House:<?php if($p['house'] == 0)
-              echo "Yes";
+              <p><?php if($p['house'] == 0)
+              echo "Apartment";
               else
-                echo "No";
+                echo "House";
               ?>
             </p>
             <div class='row'style='width: 75%;'>
