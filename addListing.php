@@ -1,6 +1,7 @@
 <?php
 require('connectdb.php');
 require('property_db.php');
+// session_start();
 //$friends = ''; //null
 $properties = getAllProperties();
 $listingID = "";
@@ -53,7 +54,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
      $state = $p['state']; 
      $zipcode = $p['zipcode'];
    endforeach;
-
  }
  elseif(!empty($_POST['action']) && ($_POST['action']=='Confirm update'))
  {
@@ -70,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="your name">
   <meta name="description" content="include some description about your page">      
-  <title>My Account</title>
+  <title>Add/Edit Listing</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
@@ -79,15 +79,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <body>
 
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>C'Ville Student Housing</a>
+    <span class="navbar-brand" href="#" style='color: #84DCC6;'>C'Ville Student Housing</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item">
+          <a class="nav-link" href="properties.php">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">My Account</a>
@@ -100,11 +100,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
     <h1>Add and Update a Property</h1>
     <!-- <form action="formprocessing.php" method="post">  -->
-      <form name="mainForm" action="manager.php" method="post">
+      <form name="mainForm" action="addListing.php" method="post">
         <div class='container'> 
           <div class='row'>
             <div class="col-sm form-group">
-              ListingID <?php echo $listingID ?>:
+              ListingID:
               <input type="text" class="form-control" name="listingID" value="<?php echo $listingID ?>" required />        
             </div>  
             <div class="col-sm form-group">
@@ -124,9 +124,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="col-sm form-group">
               House:
               <!-- <input type="text" class="form-control" name="house" value="<?php echo $house ?>" required />         -->
-              <select class='custom-select'>
+              <select name='house' class='custom-select'>
                 <?php if($house == null): ?>
-                  <option selected value="<?php echo $parking ?>"></option>
+                  <option disabled selected>Choose...</option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                   <?php elseif($house == 1): ?>
@@ -136,8 +136,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                       <option value="1">Yes</option>
                       <option selected value="0">No</option>
                     <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
               </select>
             </div>
           </div>
@@ -159,9 +157,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="col-sm form-group">
               Pets:
               <!-- <input type="text" class="form-control" name="pets" value="<?php echo $pets ?>" required /> -->
-              <select required class='custom-select'>
+              <select name='pets' required class='custom-select'>
                 <?php if($pets == null): ?>
-                  <option selected value="<?php echo $parking ?>"></option>
+                  <option disabled selected>Choose...</option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                   <?php elseif($pets == 1): ?>
@@ -171,16 +169,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                       <option value="1">Yes</option>
                       <option selected value="0">No</option>
                     <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
               </select> 
             </div>  
             <div class="col-sm form-group">
               Parking:
               <!-- <input type="text" class="form-control" name="parking" value="<?php echo $parking ?>"  /> -->
-              <select required class='custom-select'>
+              <select name='parking' required class='custom-select'>
                 <?php if($parking == null): ?>
-                  <option selected value="<?php echo $parking ?>"></option>
+                  <option disabled selected>Choose...</option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                   <?php elseif($parking == 1): ?>
@@ -190,16 +186,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                       <option value="1">Yes</option>
                       <option selected value="0">No</option>
                     <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
               </select>        
             </div> 
             <div class="col-sm form-group">
               Utilities:
               <!-- <input type="text" class="form-control" name="utilities" value="<?php echo $utilities ?>" /> -->
-              <select required class='custom-select'>
+              <select name='utilities' required class='custom-select'>
                 <?php if($utilities == null): ?>
-                  <option selected value="<?php echo $parking ?>"></option>
+                  <option disabled selected>Choose...</option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                   <?php elseif($utilities == 1): ?>
@@ -209,8 +203,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                       <option value="1">Yes</option>
                       <option selected value="0">No</option>
                     <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
               </select>        
             </div> 
           </div>
@@ -218,7 +210,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             <div class="col-sm form-group">
               General Location:
               <!-- <input type="text" class="form-control" name="general_location" value="<?php echo $general_location ?>" required />         -->
-              <select required name='loc' class="custom-select" id="inputGroupSelect01">
+              <select required name='general_location' class="custom-select">
                 <?php if($general_location == null): ?>
                   <option disabled selected>Choose...</option>
                   <option value="JPA">JPA</option>
@@ -237,9 +229,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                         <option value="North Grounds">North Grounds</option>
                         <option selected value="Rugby Road/Corner">Rugby Road/Corner</option>
                       <?php endif; ?>
-                    <?php endif; ?>
-                  <?php endif; ?>
-                <?php endif; ?>
               </select>
             </div>
             <div class="col-8 form-group">
@@ -263,12 +252,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           </div>
           <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a property into a properties table" />
           <input type="submit" value="Confirm update" name="action" class="btn btn-dark" title="Confirm update a property" />
-
         </div>
       </form>  
 
 
-      <hr/>
+      <hr style='background-color:#343a40;border:none;height: 1px;'>
       <h2>Current Listings</h2>
       <div style="width:100%; overflow:auto;">
         <table class="w3-table w3-bordered w3-card-4 center" style="overflow:auto">
@@ -312,13 +300,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               <td><?php echo $item['zipcode']; ?></td>
               <td>
                 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                  <input type="submit" value="Update" name="action" class="btn btn-primary" title="Update the record" />             
+                  <input type="submit" value="Update" name="action" class="btn btn-primary" title="Update the record" />
                   <input type="hidden" name="property_to_update" value="<?php echo $item['listingID'] ?>" />
                 </form> 
               </td>                        
               <td>
                 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                  <input type="submit" value="Delete" name="action" class="btn btn-danger" title="Permanently delete the record" />      
+                  <input type="submit" value="Delete" name="action" class="btn btn-danger" title="Permanently delete the record" />
                   <input type="hidden" name="property_to_delete" value="<?php echo $item['listingID'] ?>" />
                 </form>
               </td>                                              
