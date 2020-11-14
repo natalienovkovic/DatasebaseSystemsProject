@@ -107,44 +107,14 @@ function deleteProperty($listingID)
 	
 }
 
-
 function addStudentAccount($username, $passwrd){
   
   global $db;
 
-  $query = "INSERT INTO Student_sign_in VALUES(:username, 2021, :passwrd)";
+  $query = "INSERT INTO Student_sign_in VALUES(:username,2, :passwrd)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->bindValue(':passwrd', $passwrd);
-  $statement->execute(); // run query
-  $statement->closeCursor(); //release hold on this connection
-  
-}
-
-function addStudentInfo($username, $fname, $lname, $email){
-  
-  global $db;
-
-  $query = "INSERT INTO Student VALUES(:username, :fname, :lname, :email)";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->bindValue(':email', $email);
-  $statement->bindValue(':fname', $fname);
-  $statement->bindValue(':lname', $lname);
-  $statement->execute(); // run query
-  $statement->closeCursor(); //release hold on this connection
-  
-}
-function addManagerInfo($username, $company, $phone, $email){
-  
-  global $db;
-
-  $query = "INSERT INTO PropertyManager VALUES(:username, :company, :phone, :email)";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->bindValue(':email', $email);
-  $statement->bindValue(':phone', $phone);
-  $statement->bindValue(':company', $company);
   $statement->execute(); // run query
   $statement->closeCursor(); //release hold on this connection
   
@@ -153,7 +123,7 @@ function addManagerAccount($username, $passwrd){
   
   global $db;
 
-  $query = "INSERT INTO Manager_sign_in VALUES(:username, 2021, :passwrd)";
+  $query = "INSERT INTO Manager_sign_in VALUES(:username, 1, :passwrd)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->bindValue(':passwrd', $passwrd);
@@ -161,85 +131,6 @@ function addManagerAccount($username, $passwrd){
   $statement->closeCursor(); //release hold on this connection
   
 }
-
-function verifyStudentRegistered($username){
-  global $db;
-
-  $query = "SELECT * FROM Student_sign_in WHERE Student_sign_in.sid= :username";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
- 
-  if(sizeof($results) > 0){
-    return 1;
-  }
-  else{
-    return 0;
-  }
-}
-
-function verifyManagerRegistered($username){
-  global $db;
-
-  $query = "SELECT * FROM Manager_sign_in WHERE managerID = :username";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
- 
-  if(sizeof($results) > 0){
-    return 1;
-  }
-  else{
-    return 0;
-  }
-
-
-}
-
-function validate_student_password($username, $password){
-  global $db;
-
-  $query = "SELECT Student_sign_in.password FROM Student_sign_in WHERE Student_sign_in.sid = :username";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
-  
-  if(sizeof($results) > 0 ){
-    if(strcmp($results[0],$password) == 0){
-      return 1;
-    }
-  }
-  else{
-    return 0;
-  }
-}
-
-function validate_manager_password($username, $password){
-  global $db;
-
-  $query = "SELECT Manager_sign_in.password FROM Manager_sign_in WHERE Manager_sign_in.managerID = :username";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
-  
-  if(sizeof($results) > 0 ){
-    if(strcmp($results[0],$password) == 0){
-      return 1;
-    }
-  }
-  else{
-    return 0;
-  }
-}
-
 // Need to check the validity of this function
 function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $cost_min, $cost_max){
 
@@ -318,5 +209,4 @@ function getPropertySearch($num_bedrooms, $num_bathrooms, $general_location, $co
 
 //  return $results;
 // }
-
 ?>
