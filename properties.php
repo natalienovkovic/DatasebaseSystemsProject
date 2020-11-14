@@ -42,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
  {
    $propertyToUpdate = getPropertyInfo($_POST['property_to_update']);
+
    foreach ($propertyToUpdate as $p):
      $listingID = $p['listingID'];
      $managerID = $p['managerID'];
@@ -85,6 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 </head>
 
 <body>
+
 
   <!--header file -->
   <?php include 'navbar.html' ?>
@@ -222,6 +224,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 <input type="hidden" name="listingID" value="<?php echo $p['listingID'] ?>" />
                 <input type="submit" value="More info!" name="action" class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
               </form>
+
             </div>
           </div>
         </div>
