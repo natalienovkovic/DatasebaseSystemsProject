@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require('connectdb.php');
 require('property_db.php');
 require('contact_db.php');
@@ -6,22 +8,26 @@ require('waitlist_db.php');
 require('favorite_db.php');
 require('tour_db.php');
 
-$listingID = "5"; // needs to come from previous page
-$sid = "vn3gc";   //needs to come from account?
+$_SESSION["sid"]="vn3gc";
+$sid = $_SESSION["sid"];
+
+if(!empty($_POST['listingID'])) {
+   $_SESSION['listingID']= $_POST['listingID']; 
+  }
+  $listingID= $_SESSION["listingID"];
+
+
 $properties = getPropertyInfo($listingID);
-$managerID = "";
 foreach ($properties as $item){
-    $managerID = $item['managerID']; 
-}  
+  $managerID = $item['managerID']; 
+}
+
+$_SESSION["managerID"]=$managerID;
                                          
 $compName = getName($managerID);
 $waitlistNum = getPosition($sid, $listingID);
 $check = checkFavorite($sid, $listingID);
 $tour = getTour($sid, $listingID);
-
-//$tourDate = $_POST['date'];;
-//$tourTime = $_POST['time'];
-
 
 
 
@@ -47,11 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
        removeFavorite($sid, $listingID);
        $check = checkFavorite($sid, $listingID);
   }
-  if(!empty($_POST['action']) && ($_POST['action']=='Cancel Tour'))
-	{
-       removeTour($sid, $listingID);
-       $tour = getTour($sid, $listingID);
-	}
+
 }
 
 ?>
@@ -73,11 +75,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <style>
 section {
   float: left;
-  width: 50%;
+  width: 40%;
 }
 aside {
   float: right;
-  width: 50%;
+  width: 60%;
 }
 
 </style>  
@@ -85,42 +87,30 @@ aside {
 
 <body>
 
-  <!-- Navbar template from bootstrap website -->
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>Possible Name?</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <!--header file -->
+<?php include 'navbar.html' ?>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Account</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
-        <button class="sl-btn" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <!-- End Navbar code -->
 
 <div class="container">
 
-<h1>
-<?php foreach ($properties as $item) 
+<div>
+<h1 style="display: inline;">
+  <?php foreach ($properties as $item) 
     echo $item['street'];
-?>
-    
+  ?>
+
  <?php foreach ($check as $item){ ?>
      <span style="font-size:100%;color:red;">&hearts;</span>
  <?php }; ?>
 </h1>
 
+<p style="display: inline;">  
+  <?php foreach ($waitlistNum as $item){
+    echo "Place in Waitlist: ";
+    echo $item['placeInWaitlist']; }
+  ?>
+</p>
+</div>
 
  <?php foreach ($compName as $item)
      echo $item['companyName'];                                            
@@ -129,20 +119,17 @@ aside {
 <p></p>
 
 <section>
-<img src="house.png" alt="House" width="180" height="200">
+<img src="house.png" alt="House" width="200" height="200">
                                            
   <p></p>
-  <?php foreach ($waitlistNum as $item){
-    echo "Place in Waitlist: ";
-    echo $item['placeInWaitlist']; }
-?>
+
 
 <p></p>
-  <?php if(!empty($tourDate) && !empty($tourTime)){
+  <?php foreach ($tour as $t){
     echo "Tour Scheduled for : ";
-    echo $tourDate;
+    echo $t['tourDate'];
     echo " at : ";
-    echo $tourTime;
+    echo $t['tourTime'];
   }
   ?>
 
@@ -176,20 +163,20 @@ aside {
 <form name="managerForm" action="contactform.php" method="post" style="display:inline-block">
   <input type="hidden" name="managerID" value="<?php echo $managerID ?>" />
   <input type="hidden" name="sid" value="<?php echo $sid ?>" />
-  <input type="submit" class="btn btn-dark" value="Contact Agency"/>
+  <input type="submit" class="btn btn-dark" value="Contact Agency" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
 </form>   
 
 <?php if(empty($tour)){?>
 <form name="TourForm" action="tourform.php" method="post" style="display:inline-block">
   <input type="hidden" name="listingID" value="<?php echo $listingID ?>" />
   <input type="hidden" name="sid" value="<?php echo $sid ?>" />
-  <input type="submit" class="btn btn-dark" value="Request Tour"/>
+  <input type="submit" class="btn btn-dark" value="Request Tour" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
 </form> 
 <?php }; ?> 
 
 <?php if(!empty($tour)){?>
-<form name="TourFormRemove" action="propertyview.php" method="post" style="display:inline-block">
-  <input type="submit" class="btn btn-dark" name="action" value="Cancel Tour"/>
+<form name="TourFormRemove" action="tourform.php" method="post" style="display:inline-block">
+  <input type="submit" class="btn btn-dark" name="action" value="Schedule/Cancel Tour" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
 </form> 
 <?php }; ?> 
 
@@ -200,82 +187,54 @@ aside {
 
 <aside>
 
-<div style="width:100%; overflow:auto;">
 
-<?php foreach ($properties as $item): ?>
-    <div>
-    <h3 style="display: inline;">General Location </h3>
-    <p style="display: inline;"><?php echo $item['general_location']; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Address </h3>
-    <p style="display: inline;">
-    <?php echo $item['street']; ?>
-    <?php echo $item['city']; ?>
-    <?php echo $item['state']; ?>
-    <?php echo $item['zipcode']; ?>
-    </p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Move in Date: </h3>
-    <p style="display: inline;"><?php echo $item['move_in_date']; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Cost</h3>
-    <p style="display: inline;"><?php echo $item['cost_max']; ?></p>  
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">House: </h3>
-    <p style="display: inline;"><?php if($item['house'] == "1"){
-        echo "Yes"; }
-	else{ echo "No";}; ?>
-    </p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Number of Tenants: </h3>
-    <p style="display: inline;"><?php echo $item['num_tenants']; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Number of Bedrooms: </h3>
-    <p style="display: inline;"><?php echo $item['num_bedrooms']; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Number of Bathrooms: </h3>
-    <p style="display: inline;"><?php echo $item['num_bathrooms']; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Parking Included: </h3>
-    <p style="display: inline;"><?php if($item['parking'] == "1"){
-        echo "Yes"; }
-	else{ echo "No";}; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Pets Allowed: </h3>
-    <p style="display: inline;"><?php if($item['pets'] == "1"){
-        echo "Yes"; }
-	else{ echo "No";}; ?></p>
-    </div>
-    <p></p>
-    <div>
-    <h3 style="display: inline;">Utilites included in rent: </h3>
-    <p style="display: inline;"><?php if($item['utilities'] == "1"){
-        echo "Yes"; }
-	else{ echo "No";}; ?></p>
-     </div>
-    <p></p>
+
+<?php foreach ($properties as $p): ?>
+  <div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 15px; margin-bottom: 10px;'>
+          <div class='row'>
+            <div class="col-8">
+              <p>General Location:<?php echo $p['general_location']; ?></p>
+              <p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
+              <p>Move-in:<?php echo $p['move_in_date']; ?></p>
+              <p><?php if($p['house'] == 0)
+              echo "Apartment";
+              else
+                echo "House";
+              ?>
+            </p>
+            <div class='row'style='width: 75%;'>
+              <div class='col-sm'>
+                <p>Bedrooms:<?php echo $p['num_bedrooms'];?></p>
+              </div>
+              <div class='col-sm'>
+                <p>Bathrooms:<?php echo $p['num_bathrooms'];?></p>
+              </div>
+              <div class='col-sm'>
+                <p>Pets:<?php if($p['pets'] == 0)
+                echo "Yes";
+                else
+                  echo "No";
+                ?></p>
+              </div>
+            </div>
+            <div class='row' style='width: 100%;'>
+              <div class='col-sm' style='margin-right:0px;'>
+                <p>Parking Spots:<?php if($p['parking'] == 0) echo 'No'; else echo "Yes";?></p>
+              </div>
+              <div class='col-sm' style='padding:0px;'>
+                <p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
+              </div>
+            </div>
+            <p>Cost:$<?php echo $p['cost_max']?></p>
+              <div class='row'></div>
+            
+            </div>
+          </div>
+        </div>
  
 <?php endforeach; ?>
 
-</div>  
+
 </aside>    
 </div> 
    
