@@ -1,6 +1,8 @@
 <?php
     require('connectdb.php');
     require('property_db.php');
+    session_start();
+
     $username = "";
     $password = "";
     $mainpage = "register.php"; 
@@ -12,17 +14,19 @@
         if (!empty($_POST['submit'])) {
             
             if($_POST['submit'] == 'student'){
-                if(validate_student_password($username, $password) == 1){
+                if(validate_student_password($username, $password)==1){
                     //goto property page
-                    header("Location: http://cs.virginia.edu/~era9dv/files/register.php");
-                    echo "<span class='msg'>Username and password match our record</span> <br/>";
+                    $_SESSION["sid"]=$username;
+                    header("Location:properties.php");
+                   // echo "<span class='msg'>Username and password match our record</span> <br/>";
                 }
             }   
             if($_POST['submit'] == 'manager'){
                 if(validate_manager_password($username, $password) == 1){
                     //goto property page
-                    header("Location:  http://cs.virginia.edu/~era9dv/files/register.php");
-                    echo "<span class='msg'>Username and password match our record1</span> <br/>";
+                    $_SESSION["managerID"]=$username;
+                    header("Location: properties.php");
+                   // echo "<span class='msg'>Username and password match our record1</span> <br/>";
                 }
             }
         } 
@@ -32,16 +36,17 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="your name">
-    <meta name="description" content="include some description about your page">      
-    <title>DB interfacing</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
-    </head>
+<head>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="your name">
+  <meta name="description" content="include some description about your page">      
+  <title>Login</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel='stylesheet' href='styles.css'>
+  <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSraCv5uiN9OtQOm6QiXnFzKmkDSkytAlJ4ow&usqp=CAU" type="image/ico" />  
+</head>
 
     <body>
         <div class="container">
@@ -74,6 +79,7 @@
                     class="btn btn-dark" 
                     title="validate manager credentials" 
                 />
+               
                 
 
             </form><br>

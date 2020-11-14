@@ -1,6 +1,7 @@
 <?php
 require('connectdb.php');
 require('property_db.php');
+session_start();
 //$friends = ''; //null
 $properties = getAllProperties();
 $listingID = "";
@@ -25,6 +26,8 @@ $d_loc = "";
 $d_rentMin = "";
 $d_rentMax = "";
 
+$sid= $_SESSION["sid"];
+$managerID = $_SESSION["managerID"];
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {

@@ -14,13 +14,6 @@ if(isset($_SESSION["managerID"])){
   $managerID = $_SESSION["managerID"];
 }
 
-echo $sid;
-echo $managerID;
-
-
-
-//$sid = $_GET['sid'];            // need to be passed from previous page
-//$managerID = $_GET['managerID'];   // need to be passed from previous page
 $message = "";
 
 $messages = getAllMessages($sid);
@@ -82,6 +75,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a message into a message table" />
 </form>  
 
+<form name="Back" action="propertyview.php" method="post">
+  <input type="submit" class="btn btn-dark" name="action" value="Back to Listing" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
+</form> 
 <br></br>
 
 <h2>Your Messages</h2>
@@ -102,6 +98,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <?php endforeach; ?>
 </table>
 </div>
+
+
 </div>
    
 </body>

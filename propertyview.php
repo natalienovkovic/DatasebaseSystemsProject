@@ -8,7 +8,7 @@ require('waitlist_db.php');
 require('favorite_db.php');
 require('tour_db.php');
 
-$_SESSION["sid"]="vn3gc";
+//$_SESSION["sid"]="vn3gc";
 $sid = $_SESSION["sid"];
 
 if(!empty($_POST['listingID'])) {

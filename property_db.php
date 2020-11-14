@@ -199,10 +199,11 @@ function verifyManagerRegistered($username){
 
 }
 
+
 function validate_student_password($username, $password){
   global $db;
 
-  $query = "SELECT Student_sign_in.password FROM Student_sign_in WHERE Student_sign_in.sid = :username";
+  $query = "SELECT Student_sign_in.password FROM Student_sign_in WHERE Student_sign_in.sid =:username";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->execute(); // run query
