@@ -1,14 +1,31 @@
 <?php
+session_start();
 require('connectdb.php');
 require('contact_db.php');
+
+$sid = "";
+$managerID="";
+
+if(isset( $_SESSION['sid'])){
+  $sid = $_SESSION['sid'];
+}
+
+if(isset($_SESSION["managerID"])){
+  $managerID = $_SESSION["managerID"];
+}
+
+echo $sid;
+echo $managerID;
+
+
+
 //$sid = $_GET['sid'];            // need to be passed from previous page
 //$managerID = $_GET['managerID'];   // need to be passed from previous page
 $message = "";
-$sid = "vn3gc"  ;         // need to be passed from previous page
-$managerID = "1234"; 
+
 $messages = getAllMessages($sid);
 $compName = getName($managerID);
-//$companies = getCompanyNames();
+
 
 
 
@@ -38,30 +55,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 <body>
 
-  <!-- Navbar template from bootstrap website -->
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>Possible Name?</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<!--header file -->
+<?php include 'navbar.html' ?>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Account</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
-        <button class="sl-btn" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <!-- End Navbar code -->
 
+<div class='container'>
 
 <h2>Message to:
  <?php foreach ($compName as $item)
@@ -69,10 +67,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     echo $item['companyName'];                                            
 
 ?>
-</h2> 
+</h2>
+
+</br>
 
 
 <!-- <form action="formprocessing.php" method="post">  -->
+
 <form name="mainForm" action="contactform.php" method="post">
 <div class="form-group">
     Message:
@@ -80,8 +81,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   </div> 
 <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a message into a message table" />
 </form>  
-  
-<hr/>
+
+<br></br>
+
 <h2>Your Messages</h2>
 <div style="width:100%; overflow:auto;">
 <table class="w3-table w3-bordered w3-card-4 center" style="overflow:auto">
@@ -99,6 +101,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   </tr>
 <?php endforeach; ?>
 </table>
+</div>
 </div>
    
 </body>

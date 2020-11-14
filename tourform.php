@@ -1,19 +1,35 @@
 <?php
+session_start();
 require('connectdb.php');
 require('tour_db.php');
 //$sid = $_POST['sid'];            // need to be passed from previous page
 //$listingID = $_POST['listingID'];   // need to be passed from previous page
 
+$sid = "";
+$listingID="";
 
-$sid = "vn3gc";            // need to be passed from previous page
-$listingID = "5"; 
+if(isset($_SESSION['sid'])){
+  $sid = $_SESSION['sid'];
+}
+
+if(isset($_SESSION["listingID"])){
+  $listingID = $_SESSION["listingID"];
+}
+
+$tour = getTour($sid, $listingID);
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-  if(!empty($_POST['action']) && ($_POST['action']=='Add'))
+  if(!empty($_POST['action']) && ($_POST['action']=='Schedule'))
 	{
      addTour($sid, $listingID, $_POST['date'], $_POST['time']); 
+     $tour = getTour($sid, $listingID);
+  }
+  if(!empty($_POST['action']) && ($_POST['action']=='Cancel Tour'))
+	{
+       removeTour($sid, $listingID);
+       $tour = getTour($sid, $listingID);
 	}
 }
 ?>
@@ -34,40 +50,51 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 <body>
 
-  <!-- Navbar template from bootstrap website -->
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>Possible Name?</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <!--header file -->
+  <?php include 'navbar.html' ?>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Account</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
-        <button class="sl-btn" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <!-- End Navbar code -->
+<div class="container">
+
+
+<?php foreach ($tour as $item)
+  $managerID = $item['managerID']; 
+?>
 
 <h2>Schedule A Tour</h2> 
 
-<form name="dateForm" action="propertyview.php" method="post">
+<?php if(empty($tour)){ ?>
+
+<br></br>
+
+<form name="dateForm" action="tourform.php" method="post">
   <label for="date">Date:</label>
-  <input type="date" name="date"><br>
+  <input type="date" name="date"><br><br>
   <label for="time">Select a time:</label>
-  <input type="time" name="time"><br>
+  <input type="time" name="time"><br></br>
   <input type="submit" value="Schedule" name="action" class="btn btn-dark" title="Submit Date" />
 </form>
 
+<?php }
+
+else {
+  ?> <br></br><?php
+  foreach ($tour as $item){?>
+    <h3>Your tour is scheduled for : <?php echo $item['tourDate'];?> at <?php echo $item['tourTime'];?></h3>
+    <?php }; ?>
+   <br></br>
+  <form name="TourFormRemove" action="tourform.php" method="post" style="display:inline-block">
+    <input type="submit" class="btn btn-dark" name="action" value="Cancel Tour"/>
+  </form> 
+
+<?php }; ?>
+
+
+<form name="Back" action="propertyview.php" method="post">
+  <input type="submit" class="btn btn-dark" name="action" value="Back to Listing" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
+</form> 
+
+
+</div>
 
 </body>
 </html>

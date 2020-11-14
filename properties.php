@@ -38,9 +38,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
    deleteProperty($_POST['property_to_delete']);
    $properties = getAllProperties();
  }
+
  elseif(!empty($_POST['action']) && ($_POST['action']=='Update'))
  {
-   $propertyToUpdate = getPropertyInfo_by_id($_POST['property_to_update']);
+   $propertyToUpdate = getPropertyInfo($_POST['property_to_update']);
+
    foreach ($propertyToUpdate as $p):
      $listingID = $p['listingID'];
      $managerID = $p['managerID'];
@@ -85,25 +87,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 <body>
 
-  <!-- Navbar template from bootstrap website -->
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#" style='color: #84DCC6;'>C'Ville Student Housing</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My Account</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <!-- End Navbar code -->
+  <!--header file -->
+  <?php include 'navbar.html' ?>
+
 
   <!-- Header -->
   <div class="container">
@@ -195,7 +182,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         <div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
           <div class='row'>
             <div class='col-4'>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
+             <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'> -->
+              <img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
             </div>
             <div class="col-8">
               <p>General Location:<?php echo $p['general_location']; ?></p>
@@ -232,12 +220,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             </div>
             <p>Cost:$<?php echo $p['cost_max']?></p>
               <div class='row'></div>
-              <button class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'>More Info!</button> <!-- Need to implement this button to redirect to the property -->
+              <form name="mainForm" action="propertyview.php" method="post">
+                <input type="hidden" name="listingID" value="<?php echo $p['listingID'] ?>" />
+                <input type="submit" value="More info!" name="action" class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
+              </form>
+
             </div>
           </div>
         </div>
       <?php endforeach; ?>
     </div>
-
   </body>
   </html>
