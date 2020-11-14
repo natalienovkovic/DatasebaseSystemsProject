@@ -19,58 +19,68 @@
 //      execute() actually executes the SQL statement
 
 
-function addToFavorite($sid, $listingID)
+function getAllTours($sid)
 {
 
   global $db;
-  $query = "INSERT INTO Favorite VALUES(:sid, :listingID)";
+  $query = "SELECT * FROM Tour WHERE sid=:sid";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
-  $statement->bindValue(':listingID', $listingID);
   $statement->execute();
 
   $results = $statement->fetchAll(); // returns an array of rows
   $statement->closeCursor();
-	
-}
 
-
-function removeFavorite($sid, $listingID)
-{
-
-  global $db;
-  $query = "DELETE FROM Favorite WHERE sid=:sid AND listingID=:listingID";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':sid', $sid);
-  $statement->bindValue(':listingID', $listingID);
-  $statement->execute();
-
-  $results = $statement->fetchAll(); // returns an array of rows
-  $statement->closeCursor();
-  
-	
-}
-
-function checkFavorite($sid, $listingID)
-{
-
-  global $db;
-  $query = "SELECT * FROM Favorite WHERE sid=:sid AND listingID=:listingID";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':sid', $sid);
-  $statement->bindValue(':listingID', $listingID);
-  $statement->execute();
-
-  $results = $statement->fetchAll(); // returns an array of rows
-  $statement->closeCursor();
-   
   return $results;
-  
 	
 }
 
+function getTour($sid, $listingID)
+{
 
+  global $db;
+  $query = "SELECT * FROM Tour WHERE sid=:sid AND listingID=:listingID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->execute();
 
+  $results = $statement->fetchAll(); // returns an array of rows
+  $statement->closeCursor();
+
+  return $results;
+	
+}
+
+function addTour($sid, $listingID, $tourDate, $tourTime)
+{
+
+  global $db;
+  $query = "INSERT INTO Tour VALUES(:sid, :listingID, :tourDate, :tourTime)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->bindValue(':tourDate', $tourDate);
+  $statement->bindValue(':tourTime', $tourTime);
+  $statement->execute(); // run query
+  $statement->closeCursor(); //release hold on this connection
+  
+}
+
+function removeTour($sid, $listingID)
+{
+
+  global $db;
+  $query = "DELETE FROM Tour WHERE sid=:sid AND listingID=:listingID";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->execute();
+
+  $statement->closeCursor();
+  
+	
+}
 
 
 ?>

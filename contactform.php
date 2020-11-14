@@ -1,13 +1,31 @@
 <?php
+session_start();
 require('connectdb.php');
 require('contact_db.php');
-$sid = $_POST['sid'];            // need to be passed from previous page
-$managerID = $_POST['managerID'];   // need to be passed from previous page
+
+$sid = "";
+$managerID="";
+
+if(isset( $_SESSION['sid'])){
+  $sid = $_SESSION['sid'];
+}
+
+if(isset($_SESSION["managerID"])){
+  $managerID = $_SESSION["managerID"];
+}
+
+echo $sid;
+echo $managerID;
+
+
+
+//$sid = $_GET['sid'];            // need to be passed from previous page
+//$managerID = $_GET['managerID'];   // need to be passed from previous page
 $message = "";
 
 $messages = getAllMessages($sid);
 $compName = getName($managerID);
-//$companies = getCompanyNames();
+
 
 
 
@@ -28,14 +46,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="your name">
   <meta name="description" content="include some description about your page">      
-  <title>DB interfacing</title>
+  <title>Contact</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="shortcut icon" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" type="image/ico" />  
+  <link rel='stylesheet' href='styles.css'>
+  <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSraCv5uiN9OtQOm6QiXnFzKmkDSkytAlJ4ow&usqp=CAU" type="image/ico" />  
 </head>
 
 <body>
-<div class="container">
+
+<!--header file -->
+<?php include 'navbar.html' ?>
+
+
+<div class='container'>
 
 <h2>Message to:
  <?php foreach ($compName as $item)
@@ -43,23 +67,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     echo $item['companyName'];                                            
 
 ?>
+</h2>
 
-
- </h2> 
+</br>
 
 
 <!-- <form action="formprocessing.php" method="post">  -->
+
 <form name="mainForm" action="contactform.php" method="post">
 <div class="form-group">
     Message:
     <input type="text" class="form-control" name="message" value="<?php echo $message ?>" required /> 
-  </div>
-
-  
+  </div> 
 <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a message into a message table" />
 </form>  
-  
-<hr/>
+
+<br></br>
+
 <h2>Your Messages</h2>
 <div style="width:100%; overflow:auto;">
 <table class="w3-table w3-bordered w3-card-4 center" style="overflow:auto">
@@ -77,6 +101,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   </tr>
 <?php endforeach; ?>
 </table>
+</div>
 </div>
    
 </body>

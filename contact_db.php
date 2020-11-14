@@ -34,7 +34,6 @@ function getAllMessages($sid)
   return $results;
 	
 	
-	
 }
 
 function addMessage($sid, $managerID, $message)
