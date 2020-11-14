@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<p>Company Name: </p>
 				<p>Phone: </p>
 				<p>Email: </p>
-				<button onclick="location.href = 'addListing.php'" class="btn btn-primary" style='background-color: #84DCC6; border-color: #84DCC6;color:#000;' action='addListing.php' href='addListing.php'>Add a listing</button> <!-- Needs to redirect to the manager's listings -->
+				<button onclick="location.href = 'addListing.php'" class="btn btn-primary" style='background-color: #84DCC6; border-color: #84DCC6;color:#000;'>Add a listing</button> <!-- Needs to redirect to the manager's listings -->
 			</div>
 		</div>
 		<div class='container'>
@@ -111,10 +111,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 									<p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
 								</div>
 							</div>
-							<p style='margin-bottom:0px;'>Cost:$<?php echo $p['cost_max']?></p>
-							<div class='row' style='padding-left: 15px;'>
-								<button class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;margin-right:15px;'>Update</button>
-								<button class='btn btn-danger' style='margin-top: 10px;color:black;'>Delete</button>
+							<p style='margin-bottom:15px;'>Cost:$<?php echo $p['cost_max']?></p>
+							<div class='row' style='padding-left:15px;'>
+								<form action="addListing.php" method="post">
+									<input type="submit" value="Update" name="action" class="btn btn-primary" title="Update the record" style='margin-right:15px;color:black;background-color:#84DCC6;border-color:#84DCC6;'/>
+									<input type="hidden" name="property_to_update" value="<?php echo $p['listingID'] ?>" />
+				                </form> 
+				                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+									<input type="submit" value="Delete" name="action" class="btn btn-danger" title="Permanently delete the record" style='color:black;'/>
+									<input type="hidden" name="property_to_delete" value="<?php echo $p['listingID'] ?>" />
+								</form>
 							</div>
 						</div>
 					</div>

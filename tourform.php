@@ -50,24 +50,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           <a class="nav-link" href="#">My Account</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" name='sl' placeholder="Search listings" aria-label="Search">
-        <button class="sl-btn" type="submit">Search</button>
-      </form>
     </div>
   </nav>
   <!-- End Navbar code -->
 
-<h2>Schedule A Tour</h2> 
+<div class='container'>
+  <h2>Schedule A Tour</h2> 
 
-<form name="dateForm" action="propertyview.php" method="post">
-  <label for="date">Date:</label>
-  <input type="date" name="date"><br>
-  <label for="time">Select a time:</label>
-  <input type="time" name="time"><br>
-  <input type="submit" value="Schedule" name="action" class="btn btn-dark" title="Submit Date" />
-</form>
-
+  <form name="dateForm" action="propertyview.php" method="post">
+    <label for="date">Date:</label>
+    <input type="date" name="date"><br>
+    <label for="time">Select a time:</label>
+    <input type="time" name="time"><br>
+    <input type="submit" value="Schedule" name="action" class="btn btn-dark" title="Submit Date" />
+  </form>
+</div>
 
 </body>
 </html>

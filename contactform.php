@@ -62,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   </nav>
   <!-- End Navbar code -->
 
-
+<div class='container'>
 <h2>Message to:
  <?php foreach ($compName as $item)
  
@@ -100,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <?php endforeach; ?>
 </table>
 </div>
-   
+   </div>
 </body>
 </html>
   
