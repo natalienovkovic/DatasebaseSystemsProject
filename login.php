@@ -7,8 +7,7 @@
     $password = "";
     $mainpage = "register.php"; 
 
-    echo $_SESSION["sid"];
-    echo $_SESSION["managerID"];
+    
 
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $username = $_POST['username'];
@@ -20,6 +19,7 @@
                 if(validate_student_password($username, $password) == 1){
                     //goto property page
                     $_SESSION["sid"]=$username;
+                    $_SESSION["type"]="student";
                     header("Location:properties.php");
                    // echo "<span class='msg'>Username and password match our record</span> <br/>";
                 }
@@ -28,6 +28,7 @@
                 if(validate_manager_password($username, $password) == 1){
                     //goto property page
                     $_SESSION["managerID"]=$username;
+                    $_SESSION["type"]="manager";
                     header("Location: properties.php");
                    // echo "<span class='msg'>Username and password match our record1</span> <br/>";
                 }

@@ -36,25 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-	<!-- Navbar template from bootstrap website -->
-	<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-		<span class="navbar-brand" style='color: #84DCC6;'>C'Ville Student Housing</span>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="properties.php">Home <span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="#">My Account</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	<!-- End Navbar code -->
+<!-- navbar -->
+<?php include 'navbar.html' ?>
 
 	<div name='body'>
 		<div name='welcome-msg'>
@@ -77,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="container" style='padding: 10px;border: solid 1px;border-radius: 30px; margin-bottom: 20px;margin-right:0px;margin-left:0px;margin-top:10px;'>
 						<div class='row'>
 							<div class='col-4'>
-								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
+							<img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
 							</div>
 							<div class="col-8">
 								<p>General Location:<?php echo $p['general_location']; ?></p>
