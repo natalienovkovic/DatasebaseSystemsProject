@@ -34,7 +34,7 @@ session_destroy();
 </br>
 
 
-<form name="Back" action="login.php" method="post">
+<form name="Back" action="login.php" method="post" value="1">
   <input type="submit" class="btn btn-dark" name="action" value="Log back in" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
 </form> 
 <br></br>
