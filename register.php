@@ -19,7 +19,7 @@
         
 
         $pwd = htmlspecialchars($pwd); 
-        //$pwd_hashed = password_hash($pwd, PASSWORD_DEFAULT);
+        //$pwd = password_hash($pwd, PASSWORD_DEFAULT);
         //echo "password_hash (PASSWORD_DEFAULT) =" . password_hash($pwd, PASSWORD_DEFAULT) . "<br/><br/>";
         
 
