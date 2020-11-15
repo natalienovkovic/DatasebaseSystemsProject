@@ -19,11 +19,11 @@
 //      execute() actually executes the SQL statement
 
 
-function getAllMessages($sid)
+function getAllTours($sid)
 {
 
   global $db;
-  $query = "SELECT * FROM Contact NATURAL JOIN PropertyManager WHERE sid=:sid";
+  $query = "SELECT * FROM Tour WHERE sid=:sid";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
   $statement->execute();
@@ -33,63 +33,54 @@ function getAllMessages($sid)
 
   return $results;
 	
-	
 }
 
-function addMessage($sid, $managerID, $message)
+function getTour($sid, $listingID)
 {
 
   global $db;
-
-
-  $query = "INSERT INTO Contact VALUES(:sid, :managerID, :message)";
+  $query = "SELECT * FROM Tour WHERE sid=:sid AND listingID=:listingID";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
-  $statement->bindValue(':managerID', $managerID);
-  $statement->bindValue(':message', $message);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->execute();
+
+  $results = $statement->fetchAll(); // returns an array of rows
+  $statement->closeCursor();
+
+  return $results;
+	
+}
+
+function addTour($sid, $listingID, $tourDate, $tourTime)
+{
+
+  global $db;
+  $query = "INSERT INTO Tour VALUES(:sid, :listingID, :tourDate, :tourTime)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
+  $statement->bindValue(':listingID', $listingID);
+  $statement->bindValue(':tourDate', $tourDate);
+  $statement->bindValue(':tourTime', $tourTime);
   $statement->execute(); // run query
   $statement->closeCursor(); //release hold on this connection
   
 }
-   
-function getManager_by_listing($listingID)
+
+function removeTour($sid, $listingID)
 {
-  global $db; 
-  $query = "SELECT managerID FROM Property WHERE listingID=:listingID";
+
+  global $db;
+  $query = "DELETE FROM Tour WHERE sid=:sid AND listingID=:listingID";
   $statement = $db->prepare($query);
+  $statement->bindValue(':sid', $sid);
   $statement->bindValue(':listingID', $listingID);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
- 
-  return $results;	
-}
+  $statement->execute();
 
-function getCompanyNames()
-{
-  global $db; 
-  $query = "SELECT DISTINCT companyName FROM PropertyManager";
-  $statement = $db->prepare($query);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
- 
-  return $results;
+  $statement->closeCursor();
+  
 	
 }
 
-function getName($managerID)
-{
-  global $db; 
-  $query = "SELECT * FROM PropertyManager WHERE managerID=:managerID";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':managerID', $managerID);
-  $statement->execute(); // run query
-  $results = $statement->fetchAll();
-  $statement->closeCursor(); //release hold on this connection
- 
-  return $results;
-	
-}
 
 ?>
