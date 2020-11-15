@@ -2,8 +2,7 @@
 session_start();
 require('connectdb.php');
 require('tour_db.php');
-//$sid = $_POST['sid'];            // need to be passed from previous page
-//$listingID = $_POST['listingID'];   // need to be passed from previous page
+
 
 $sid = "";
 $listingID="";

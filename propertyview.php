@@ -8,7 +8,7 @@ require('waitlist_db.php');
 require('favorite_db.php');
 require('tour_db.php');
 
-$_SESSION["sid"]="vn3gc";
+//$_SESSION["sid"]="vn3gc";
 $sid = $_SESSION["sid"];
 
 if(!empty($_POST['listingID'])) {
@@ -234,6 +234,9 @@ aside {
  
 <?php endforeach; ?>
 
+<form name="Back" action="properties.php" method="post">
+  <input type="submit" class="btn btn-dark" name="action" value="Back to Browse" style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
+</form> 
 
 </aside>    
 </div> 
