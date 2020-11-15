@@ -18,6 +18,7 @@ $tours = getMyTours($sid);
 $i=1;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!empty($_POST['action']) && $_POST['action'] == 'Remove') {
+		echo "removing" . $_POST['favorite_to_delete'] . "<br>";
 		removeFavorite($sid, $_POST['favorite_to_delete']);
 		$favorites = getMyFavorites($sid);
 } else if (!empty($_POST['action']) && ($_POST['action'] == 'Cancel')) {
