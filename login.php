@@ -17,7 +17,7 @@
         if (!empty($_POST['submit'])) {
             
             if($_POST['submit'] == 'student'){
-                if(validate_student_password($username, $password)==1){
+                if(validate_student_password($username, $password) == 1){
                     //goto property page
                     $_SESSION["sid"]=$username;
                     header("Location:properties.php");

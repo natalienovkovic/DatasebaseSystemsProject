@@ -20,6 +20,7 @@
 
         $pwd = htmlspecialchars($pwd); 
         //$pwd = password_hash($pwd, PASSWORD_DEFAULT);
+        $pwd = crypt($pwd);
         //echo "password_hash (PASSWORD_DEFAULT) =" . password_hash($pwd, PASSWORD_DEFAULT) . "<br/><br/>";
         
 
@@ -28,16 +29,11 @@
                 if($_POST['radio'] == 'student'){
                     addStudentAccount($username, $pwd);
                     addStudentInfo($username, $fname, $lname, $email);
-                    // if(verifyStudentRegistered($username) == 1){
-                    //     echo "Hi, you have successfully Registered as a Student";
-                    // }
-                    // else{
-                    //     echo "problem registering";
-                    // }
                 }
                 if($_POST['radio'] == 'manager'){
                     if(!isset($_POST['companyname']) || !isset($_POST['phone'])){
-                        alert("please enter company name and phone number");
+                        echo("<span class='msg'>please enter company name and phone number</span> <br/>");
+                        
                     }
                     else{
                         $company = $_POST['companyname'];
@@ -93,7 +89,7 @@
                     <input type="text" class="form-control" name="username" placeholder="username"  required />        
                 </div>  
                 <div class="form-group">
-                    Password:
+                    Password: (must be 5 or more characters)
                     <input type="password" class="form-control" name="password" placeholder="password"  required /> 
                 </div> 
                 <div class="form-group">
