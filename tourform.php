@@ -55,9 +55,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <div class="container">
 
 
-<?php foreach ($tour as $item)
+<!-- <?php foreach ($tour as $item)
   $managerID = $item['managerID']; 
-?>
+?> -->
 
 <h2>Schedule A Tour</h2> 
 

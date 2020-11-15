@@ -1,11 +1,11 @@
 <?php 
 
-// CREATE TABLE IF NOT EXISTS PropertyManager (
-// managerID INT NOT NULL PRIMARY KEY, -- Primary Key of this table
-// companyName VARCHAR(50) NOT NULL,
-// phone VARCHAR(10),
-// email VARCHAR(50) NOT NULL,
+// CREATE TABLE IF NOT EXISTS Student (
+// sid VARCHAR(10) NOT NULL PRIMARY KEY, -- Primary Key of this table
+// fname VARCHAR(20) NOT NULL,
+// lname VARCHAR(20) NOT NULL,
 // );
+
 
 
 // Prepared statement (or parameterized statement) happens in 2 phases:
@@ -21,12 +21,12 @@
 //      execute() actually executes the SQL statement
 
    
-function getMyProperties($managerID)
+function getMyFavorites($sid)
 {
 	global $db;
-	$query = "SELECT * FROM Property WHERE managerID=:managerID";
+	$query = "SELECT * FROM Favorite CROSS JOIN Property WHERE Favorite.listingID = Property.listingID AND Favorite.sid=:sid";
 	$statement = $db->prepare($query); //make an executable version
-	$statement->bindValue(':managerID', $managerID);
+	$statement->bindValue(':sid', $sid);
 	$statement->execute();
 	$results = $statement->fetchAll(); //returns an array of all rows from the result that we execute
 	$statement->closeCursor();
@@ -34,12 +34,25 @@ function getMyProperties($managerID)
 	return $results; 
 }
 
-function getMyInfo($managerID)
+function getMyTours($sid)
 {
 	global $db;
-	$query = "SELECT * FROM PropertyManager WHERE managerID=:managerID";
+	$query = "SELECT * FROM Tour CROSS JOIN Property WHERE Tour.listingID = Property.listingID AND Tour.sid=:sid";
 	$statement = $db->prepare($query); //make an executable version
-	$statement->bindValue(':managerID', $managerID);
+	$statement->bindValue(':sid', $sid);
+	$statement->execute();
+	$results = $statement->fetchAll(); //returns an array of all rows from the result that we execute
+	$statement->closeCursor();
+
+	return $results; 
+}
+
+function myInfo($sid)
+{
+	global $db;
+	$query = "SELECT * FROM Student WHERE sid=:sid";
+	$statement = $db->prepare($query); //make an executable version
+	$statement->bindValue(':sid', $sid);
 	$statement->execute();
 	$results = $statement->fetchAll(); //returns an array of all rows from the result that we execute
 	$statement->closeCursor();

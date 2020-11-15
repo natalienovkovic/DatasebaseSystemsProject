@@ -9,7 +9,10 @@ require('favorite_db.php');
 require('tour_db.php');
 
 //$_SESSION["sid"]="vn3gc";
-$sid = $_SESSION["sid"];
+if(isset($_SESSION["sid"]))
+  $sid = $_SESSION["sid"];
+else
+  $sid = "";
 
 if(!empty($_POST['listingID'])) {
    $_SESSION['listingID']= $_POST['listingID']; 
@@ -22,7 +25,7 @@ foreach ($properties as $item){
   $managerID = $item['managerID']; 
 }
 
-$_SESSION["managerID"]=$managerID;
+// $_SESSION["managerID"]=$managerID;
                                          
 $compName = getName($managerID);
 $waitlistNum = getPosition($sid, $listingID);

@@ -2,16 +2,22 @@
 require('connectdb.php');
 require('manager_db.php');
 require('property_db.php');
+session_start();
 
-$properties = getAllProperties(); //this needs to be replaced with the specific manager's listings (i.e. getMyProperties();)
-//instantiate any variables as necessary
+$managerID = $_SESSION["managerID"];
+
+if(!isset($_SESSION['managerID']))
+	header("Location:properties.php");
+
+$info = getMyInfo($managerID);
+$properties = getMyProperties($managerID);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!empty($_POST['action']) && $_POST['action'] == 'Add') {
 		addProperty($_POST['managerID'], $_POST['companyName'], $_POST['phone'], $_POST['email']);
-    $properties = getMyProperties(); //returns an array containing a that manager's properties
+    $properties = getMyProperties($managerID); //returns an array containing a that manager's properties
 } else if (!empty($_POST['action']) && ($_POST['action'] == 'Delete')) {
 	deleteProperty($_POST['property_to_delete']); //TODO: make deleteProperty method
-	$properties = getAllProperties();
+	$properties = getMyProperties($managerID);
 }
 }
 ?>
@@ -40,16 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- navbar -->
 <?php include 'navbar.html' ?>
 
+
 	<div name='body'>
 		<div name='welcome-msg'>
-			<h1 style='text-align: center'>Welcome back, *name here*</h1>
+			<h1 style='text-align: center'>Welcome back, <em><?php echo $info[0]['companyName']?></em></h1>
 		</div>
 		<div name='info' style='width: 80%;display:block;margin: auto;'>
 			<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSZVLlHlKrUYXoD_kgc2VHr7qRiQppYqYAeNw&usqp=CAU" alt="Your profile photo here!" style=''>
 			<div class='align-middle' name='basic_info' style='margin:auto;display: inline-block;'>
-				<p>Company Name: </p>
-				<p>Phone: </p>
-				<p>Email: </p>
+				<p>Company Name: <?php echo $info[0]['companyName']?></p>
+				<p>Phone: <?php echo $info[0]['phone']?></p>
+				<p>Email: <?php echo $info[0]['email']?></p>
 				<button onclick="location.href = 'addListing.php'" class="btn btn-primary" style='background-color: #84DCC6; border-color: #84DCC6;color:#000;'>Add a listing</button> <!-- Needs to redirect to the manager's listings -->
 			</div>
 		</div>
@@ -57,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<hr style='background-color:#343a40;border:none;height: 1px;'>
 			<!-- Loop to display listings -->
 			<div class='container'>
+				<?php if($properties == null): ?>
+					<h2 style='text-align:center;'>You don't have any listings!</h2>
+				<?php else:?>
 				<?php foreach ($properties as $p): ?>
 					<div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
 						<div class='row'>
@@ -110,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					</div>
 				</div>
 			<?php endforeach; ?>
+		<?php endif;?>
 		</div>
 	</div>
 </div>

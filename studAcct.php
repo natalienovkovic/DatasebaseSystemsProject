@@ -1,18 +1,29 @@
 <?php
 require('connectdb.php');
-require('manager_db.php');
+require('tour_db.php');
+require('favorite_db.php');
+require('student_db.php');
 require('property_db.php');
+require('waitlist_db.php');
+session_start();
 
-$properties = getAllProperties(); //this needs to be replaced with the specific manager's listings (i.e. getMyProperties();)
-//instantiate any variables as necessary
+$sid = $_SESSION['sid'];
+if(!isset($_SESSION['sid']))
+	header("Location:properties.php");
+
+$info = myInfo($sid);
+$properties = getAllProperties();
+$favorites = getMyFavorites($sid);
+$tours = getMyTours($sid);
 $i=1;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if (!empty($_POST['action']) && $_POST['action'] == 'Add') {
-		addProperty($_POST['managerID'], $_POST['companyName'], $_POST['phone'], $_POST['email']);
-    $properties = getMyProperties(); //returns an array containing a that manager's properties
-} else if (!empty($_POST['action']) && ($_POST['action'] == 'Delete')) {
-	deleteProperty($_POST['property_to_delete']); //TODO: make deleteProperty method
-	$properties = getAllProperties();
+	if (!empty($_POST['action']) && $_POST['action'] == 'Remove') {
+		echo "removing" . $_POST['favorite_to_delete'] . "<br>";
+		removeFavorite($sid, $_POST['favorite_to_delete']);
+		$favorites = getMyFavorites($sid);
+} else if (!empty($_POST['action']) && ($_POST['action'] == 'Cancel')) {
+	removeTour($sid, $_POST['tour_to_delete']);
+	$tours = getMyTours($sid);
 }
 }
 ?>
@@ -40,17 +51,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- navbar -->
 <?php include 'navbar.html' ?>
 
+
 	<div name='body'>
 		<div name='welcome-msg'>
-			<h1 style='text-align: center'>Welcome back, *name here*</h1>
+			<h1 style='text-align: center'>Welcome back, <em><?php echo $info[0]['fname'] . " " . $info[0]['lname']?></em></h1>
 		</div>
 		<div name='info' style='width: 80%;display:block;margin: auto;'>
 			<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSZVLlHlKrUYXoD_kgc2VHr7qRiQppYqYAeNw&usqp=CAU" alt="Your profile photo here!" style=''>
 			<div class='align-middle' name='basic_info' style='margin:auto;display: inline-block;'>
-				<p>Full Name: </p>
-				<p>Phone: </p>
-				<p>Email: </p>
-				<!-- <button onclick="location.href = '#'" class="btn btn-primary" style='background-color: #84DCC6; border-color: #84DCC6;color:#000;' action='addListing.php' href='addListing.php'>My scheduled tours</button> -->
+				<p>Full Name: <?php echo $info[0]['fname'] . " " . $info[0]['lname']?></p>
+				<p>Email: <?php echo $info[0]['semail']?></p>
 			</div>
 		</div>
 		<div class='container'>
@@ -80,79 +90,94 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 								<div class='col-sm'>
 									<p>Bathrooms:<?php echo $p['num_bathrooms'];?></p>
 								</div>
-								<div class='col-sm'>
-									<p>Pets:<?php if($p['pets'] == 0)
-									echo "Yes";
+								<div class="col-8">
+									<p>General Location:<?php echo $p['general_location']; ?></p>
+									<p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
+									<p>Move-in:<?php echo $p['move_in_date']; ?></p>
+									<p><?php if($p['house'] == 0)
+									echo "Apartment";
 									else
-										echo "No";
-									?></p>
+										echo "House";
+									?>
+								</p>
+								<div class='row'style='width: 75%;'>
+									<div class='col-sm'>
+										<p>Bedrooms:<?php echo $p['num_bedrooms'];?></p>
+									</div>
+									<div class='col-sm'>
+										<p>Bathrooms:<?php echo $p['num_bathrooms'];?></p>
+									</div>
+									<div class='col-sm'>
+										<p>Pets:<?php if($p['pets'] == 0)
+										echo "Yes";
+										else
+											echo "No";
+										?></p>
+									</div>
 								</div>
+								<div class='row' style='width: 50%;'>
+									<div class='col-sm' style='margin-right:0px;'>
+										<p>Parking Spots:<?php if($p['parking'] == 0) echo 'No'; else echo "Yes";?></p>
+									</div>
+									<div class='col-sm' style='padding:0px;'>
+										<p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
+									</div>
+								</div>
+								<p>Cost:$<?php echo $p['cost_max']?></p>
+								<?php if(count(getPosition($sid, $p['listingID']))!=0): ?>
+									<p>Place in waitlist:<?php echo getPosition($sid, $p['listingID'])[0]['placeInWaitlist']?></p>
+								<?php endif; ?>
+								<form name="mainForm" action="propertyview.php" method="post" style='display:inline-block;'>
+									<input type="hidden" name="listingID" value="<?php echo $p['listingID'] ?>" />
+									<input type="submit" value="More info!" name="action" class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'/>
+								</form>
+								<form style='display:inline-block;' action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+									<input type="submit" value="Remove" name="action" class="btn btn-danger" title="Permanently delete the record" style='color:black;margin-top:10px;'/>
+									<input type="hidden" name="favorite_to_delete" value="<?php echo $item['listingID'] ?>" />
+								</form>
 							</div>
-							<div class='row' style='width: 50%;'>
-								<div class='col-sm' style='margin-right:0px;'>
-									<p>Parking Spots:<?php if($p['parking'] == 0) echo 'No'; else echo "Yes";?></p>
-								</div>
-								<div class='col-sm' style='padding:0px;'>
-									<p>Utilities Included:<?php if($p['utilities'] == 0) echo 'No'; else echo "Yes";?></p>
-								</div>
-							</div>
-							<p>Cost:$<?php echo $p['cost_max']?></p>
-							<div class='row'></div>
-							<button class='btn btn-primary' style='margin-top: 10px;background-color: #84DCC6; border-color: #84DCC6;color:#000;'>More Info!</button>
-							<button class='btn btn-danger' style='margin-top: 10px;color:black;'>Remove from favorites</button> <!-- Need to implement this button to redirect to the property -->
 						</div>
 					</div>
+				<?php endforeach; ?>
+				<?php else:?>
+					<h2>You have no favorites</h2>
 				</div>
-			<?php endforeach; ?>
+			<?php endif; ?>
 		</div>
 		<div class='container'>
 			<hr style='background-color:#343a40;border:solid 1px;height: 1px;'>
-			<h2>My Scheduled Tours</h2>
-			<table class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th scope="col">#</th>
-						<th scope="col">Address</th>
-						<th scope="col">Date</th>
-						<th scope="col">Time</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($properties as $item): ?>
+			<?php if($tours != null):?>
+				<h2>My Scheduled Tours</h2>
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
 						<tr>
-							<th scope='row'><?php echo $i; $i+=1;?></th>
-							<td><?php echo $item['street'] . ", " . $item['city'] . ", " . $item['state'] . ", " . $item['zipcode']; ?></td>        
-							<td><?php echo $item['move_in_date']; ?></td> 
-							<td>Time from tours db here</td>                         
-							<td>
-								<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-									<input type="submit" value="Cancel" name="action" class="btn btn-danger" title="Permanently delete the record" style='color:black;'/>
-									<input type="hidden" name="property_to_delete" value="<?php echo $item['listingID'] ?>" />
-								</form>
-							</td>                                              
+							<th scope="col">#</th>
+							<th scope="col">Address</th>
+							<th scope="col">Date</th>
+							<th scope="col">Time</th>
 						</tr>
-					<?php endforeach; ?>
-					<!-- <tr>
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-					</tr>
-					<tr>
-						<th scope="row">3</th>
-						<td>Larry</td>
-						<td>the Bird</td>
-						<td>@twitter</td>
-					</tr> -->
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						<?php foreach ($tours as $item): ?>
+							<tr>
+								<th scope='row'><?php echo $i; $i+=1;?></th>
+								<td><?php echo $item['street'] . ", " . $item['city'] . ", " . $item['state'] . ", " . $item['zipcode']; ?></td>        
+								<td><?php echo $item['tourDate']; ?></td> 
+								<td><?php echo $item['tourTime']; ?></td>                         
+								<td>
+									<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+										<input type="submit" value="Cancel" name="action" class="btn btn-danger" title="Permanently delete the record" style='color:black;'/>
+										<input type="hidden" name="tour_to_delete" value="<?php echo $item['listingID'] ?>" />
+									</form>
+								</td>                                              
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<?php else:?>
+					<h2>You have no scheduled tours</h2>
+				<?php endif; ?>
+			</div>
 		</div>
-	</div>
-</body>
-</html>
+	</body>
+	</html>
