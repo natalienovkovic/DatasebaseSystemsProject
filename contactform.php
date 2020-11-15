@@ -53,7 +53,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 
 <div class='container'>
-
 <h2>Message to:
  <?php foreach ($compName as $item)
  

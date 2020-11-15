@@ -102,8 +102,6 @@ function deleteProperty($listingID)
   $statement->bindValue(':listingID', $listingID);
   $statement->execute(); // run query
   $statement->closeCursor(); //release hold on this connection
-
-
 }
 
 function addStudentAccount($username, $passwrd){
