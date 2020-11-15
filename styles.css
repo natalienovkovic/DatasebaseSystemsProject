@@ -15,3 +15,8 @@
 	background-color:#6eb8a5;
 	border-color:#6eb8a5;
 }
+
+.nohover:hover {
+	color:black;
+	text-decoration: none;
+}
