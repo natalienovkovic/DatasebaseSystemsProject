@@ -34,26 +34,16 @@ function getMyProperties($managerID)
 	return $results; 
 }
 
-function updateFriend($name, $major, $year)
+function getMyInfo($managerID)
 {
-	global $db; 
-	$query = "UPDATE friends SET major =:major, year =:year  WHERE name=:name";
+	global $db;
+	$query = "SELECT * FROM PropertyManager WHERE managerID=:managerID";
 	$statement = $db->prepare($query); //make an executable version
-	$statement->bindValue(':name', $name);
-	$statement->bindValue(':major', $major);
-	$statement->bindValue(':year', $year);
-	$statement->execute(); //running the query 
-	$statement->closeCursor(); //release hold on this connection 		
-	
-}
-
-function deleteFriend($name)
-{
-	global $db; 
-	$query = "DELETE FROM friends WHERE name=:name";
-	$statement = $db->prepare($query); //make an executable version
-	$statement->bindValue(':name', $name);
+	$statement->bindValue(':managerID', $managerID);
 	$statement->execute();
+	$results = $statement->fetchAll(); //returns an array of all rows from the result that we execute
 	$statement->closeCursor();
+
+	return $results; 
 }
 ?>

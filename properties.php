@@ -26,8 +26,18 @@ $d_loc = "";
 $d_rentMin = "";
 $d_rentMax = "";
 
-$sid= $_SESSION["sid"];
-$managerID = $_SESSION["managerID"];
+// echo '<pre>';
+// var_dump($_SESSION);
+// echo '</pre>';
+
+if(isset($_SESSION['sid']) AND $_SESSION["sid"] != null){
+  $sid = $_SESSION["sid"];
+  $_SESSION['account'] = "studAcct.php";
+}
+if(isset($_SESSION['managerID']) AND $_SESSION['managerID'] != null){
+  $managerID = $_SESSION["managerID"];
+  $_SESSION['account'] = "manAcct.php";
+}
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
