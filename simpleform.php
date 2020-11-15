@@ -151,8 +151,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <tr style="background-color:#B0B0B0">
     <th width="25%">ListingID</th>        
     <th width="10%">ManagerID</th>        
-    <th width="25%">Move in date</th> 
-    <th width="10%">Min Cost</th>
+    <th width="25%">Move in date</th>
     <th width="10%">Max Cost</th> 
     <th width="25%">House</th>        
     <th width="25%"># Tenants</th>        
@@ -170,7 +169,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     <td><?php echo $item['listingID']; ?></td>
     <td><?php echo $item['managerID']; ?></td>        
     <td><?php echo $item['move_in_date']; ?></td> 
-    <td><?php echo $item['cost_min']; ?></td>
     <td><?php echo $item['cost_max']; ?></td> 
     <td><?php echo $item['house']; ?></td> 
     <td><?php echo $item['num_tenants']; ?></td> 

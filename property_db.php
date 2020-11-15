@@ -102,15 +102,13 @@ function deleteProperty($listingID)
   $statement->bindValue(':listingID', $listingID);
   $statement->execute(); // run query
   $statement->closeCursor(); //release hold on this connection
-
-
 }
 
 function addStudentAccount($username, $passwrd){
   
   global $db;
 
-  $query = "INSERT INTO Student_sign_in VALUES(:username, 2021, :passwrd)";
+  $query = "INSERT INTO Student_sign_in VALUES(:username,NULL, :passwrd)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->bindValue(':passwrd', $passwrd);
@@ -151,7 +149,7 @@ function addManagerAccount($username, $passwrd){
   
   global $db;
 
-  $query = "INSERT INTO Manager_sign_in VALUES(:username, 2021, :passwrd)";
+  $query = "INSERT INTO Manager_sign_in VALUES(:username,NULL, :passwrd)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->bindValue(':passwrd', $passwrd);
@@ -198,7 +196,16 @@ function verifyManagerRegistered($username){
 
 
 }
-
+function hash_equals1($str1, $str2) {
+  if(strlen($str1) != strlen($str2)) {
+    return false;
+  } else {
+    $res = $str1 ^ $str2;
+    $ret = 0;
+    for($i = strlen($res) - 1; $i >= 0; $i--) $ret |= ord($res[$i]);
+    return !$ret;
+  }
+}
 
 function validate_student_password($username, $password){
   global $db;
@@ -211,7 +218,10 @@ function validate_student_password($username, $password){
   $statement->closeCursor(); //release hold on this connection
   
   if(sizeof($results) > 0 ){
-    if(strcmp($results[0],$password) == 0){
+    $hash = $results[0];
+    //if(strcmp($results[0], crypt($password)) == 0){
+    if(hash_equals1($hash, crypt($password, $hash)) == 1 ){
+    //if($hash === crypt($password, $hash)){
       return 1;
     }
   }
@@ -231,7 +241,9 @@ function validate_manager_password($username, $password){
   $statement->closeCursor(); //release hold on this connection
   
   if(sizeof($results) > 0 ){
-    if(strcmp($results[0],$password) == 0){
+    $hash = $results[0];
+    //if(strcmp($results[0], crypt($password)) == 0){
+    if(hash_equals1($hash, crypt($password, $hash)) == 1 ){
       return 1;
     }
   }

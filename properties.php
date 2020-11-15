@@ -182,7 +182,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     <!-- Loop to display listings -->
     <div class='container'>
       <?php foreach ($properties as $p): ?>
-        <div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
+        <div class="container" style='padding: 10px;border: solid 1px;border-radius: 30px; margin-bottom: 20px;margin-right:0px;margin-left:0px;margin-top:10px;'>
           <div class='row'>
             <div class='col-4'>
              <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'> -->
