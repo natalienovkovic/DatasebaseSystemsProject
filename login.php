@@ -36,6 +36,8 @@
 
 ?>
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,9 +53,10 @@
 </head>
 
     <body>
+    <?php include 'loginnavbar.html' ?>
         <div class="container">
 
-            <h1>Cville Student Housing DB</h1>
+            <h1>Login</h1>
 
             <!-- <form action="formprocessing.php" method="post">  -->
             <form name="mainForm" action="login.php" method="post">
