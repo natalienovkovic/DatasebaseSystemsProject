@@ -14,7 +14,7 @@ if(!isset($_SESSION['sid']))
 $info = myInfo($sid);
 $properties = getAllProperties();
 $favorites = getMyFavorites($sid);
-$tours = getMyTours($sid);
+$tours = getAllTours($sid);
 $i=1;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!empty($_POST['action']) && $_POST['action'] == 'Remove') {
