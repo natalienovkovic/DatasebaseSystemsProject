@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						<div class="container" style='padding: 10px;border: solid 1px;border-radius: 30px; margin-bottom: 20px;margin-right:0px;margin-left:0px;margin-top:10px;'>
 							<div class='row'>
 								<div class='col-4'>
-									<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
+								<img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
+
 								</div>
 								<div class="col-8">
 									<p>General Location:<?php echo $p['general_location']; ?></p>
