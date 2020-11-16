@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
 						<div class='row'>
 							<div class='col-4'>
-							<img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'>							</div>
+							<img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'></div>
 							<div class="col-8">
 								<p>General Location:<?php echo $p['general_location']; ?></p>
 								<p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
