@@ -19,9 +19,7 @@
         
 
         $pwd = htmlspecialchars($pwd); 
-        //$pwd = password_hash($pwd, PASSWORD_DEFAULT);
         $pwd = crypt($pwd);
-        //echo "password_hash (PASSWORD_DEFAULT) =" . password_hash($pwd, PASSWORD_DEFAULT) . "<br/><br/>";
         
 
         if (isset($_POST['submit'])) {

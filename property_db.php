@@ -196,16 +196,6 @@ function verifyManagerRegistered($username){
 
 
 }
-function hash_equals1($str1, $str2) {
-  if(strlen($str1) != strlen($str2)) {
-    return false;
-  } else {
-    $res = $str1 ^ $str2;
-    $ret = 0;
-    for($i = strlen($res) - 1; $i >= 0; $i--) $ret |= ord($res[$i]);
-    return !$ret;
-  }
-}
 
 function validate_student_password($username, $password){
   global $db;
@@ -218,10 +208,8 @@ function validate_student_password($username, $password){
   $statement->closeCursor(); //release hold on this connection
   
   if(sizeof($results) > 0 ){
-    $hash = $results[0];
-    //if(strcmp($results[0], crypt($password)) == 0){
-    if(hash_equals1($hash, crypt($password, $hash)) == 1 ){
-    //if($hash === crypt($password, $hash)){
+    $hash = $results[0][0];
+    if(strcmp($hash, crypt($password, $hash)) === 0){
       return 1;
     }
   }
@@ -241,9 +229,8 @@ function validate_manager_password($username, $password){
   $statement->closeCursor(); //release hold on this connection
   
   if(sizeof($results) > 0 ){
-    $hash = $results[0];
-    //if(strcmp($results[0], crypt($password)) == 0){
-    if(hash_equals1($hash, crypt($password, $hash)) == 1 ){
+    $hash = $results[0][0];
+    if(strcmp($hash, crypt($password, $hash)) === 0){
       return 1;
     }
   }
