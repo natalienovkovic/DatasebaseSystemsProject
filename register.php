@@ -18,29 +18,30 @@
         $email = $_POST['email'];
         
 
-        $pwd = htmlspecialchars($pwd); 
-        $pwd = crypt($pwd);
+        $hash = htmlspecialchars($pwd); 
+        $hash = crypt($hash);
         
 
         if (isset($_POST['submit'])) {
             if(isset($_POST['radio'])){
-                if($_POST['radio'] == 'student'){
-                    addStudentAccount($username, $pwd);
-                    addStudentInfo($username, $fname, $lname, $email);
-                }
-                if($_POST['radio'] == 'manager'){
-                    if(!isset($_POST['companyname']) || !isset($_POST['phone'])){
-                        echo("<span class='msg'>please enter company name and phone number</span> <br/>");
-                        
+                    if($_POST['radio'] == 'student'){
+                        addStudentAccount($username, $hash);
+                        addStudentInfo($username, $fname, $lname, $email);
                     }
-                    else{
-                        $company = $_POST['companyname'];
-                        $phone = $_POST['phone'];
-                        addManagerAccount($username, $pwd);
-                        addManagerInfo($username, $company, $phone, $email);
-                    }
+                    if($_POST['radio'] == 'manager'){
+                        if(!isset($_POST['companyname']) || !isset($_POST['phone'])){
+                            echo("<span class='msg'>please enter company name and phone number</span> <br/>");
+                            
+                        }
+                        else{
+                            $company = $_POST['companyname'];
+                            $phone = $_POST['phone'];
+                            addManagerAccount($username, $hash);
+                            addManagerInfo($username, $company, $phone, $email);
+                        }
                     
-                }
+                    }
+                
             }
         }
 
@@ -82,8 +83,8 @@
                     <input type="text" class="form-control" name="username" placeholder="username"  required />        
                 </div>  
                 <div class="form-group">
-                    Password: (must be 5 or more characters)
-                    <input type="password" class="form-control" name="password" placeholder="password"  required /> 
+                    Password: (must be 8 or more characters)
+                    <input type="password" class="form-control" name="password" placeholder="password"  minlength = "8" required /> 
                 </div> 
                 <div class="form-group">
                     Email:
