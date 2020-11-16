@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<?php if($properties == null): ?>
 					<h2 style='text-align:center;'>You don't have any listings!</h2>
 				<?php else:?>
+					<h2>Your Listings</h2>
 				<?php foreach ($properties as $p): ?>
 					<div class="container" style='padding: 10px;border: solid 1px;margin: 10px;border-radius: 30px; margin-bottom: 20px;'>
 						<div class='row'>
