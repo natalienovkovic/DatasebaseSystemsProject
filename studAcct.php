@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <body>
 
+
 <!-- navbar -->
 <?php include 'navbar.html' ?>
 
