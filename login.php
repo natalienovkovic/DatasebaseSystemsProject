@@ -7,9 +7,8 @@
     $password = "";
     $mainpage = "register.php"; 
 
-    echo $_SESSION["sid"];
-    echo $_SESSION["managerID"];
-
+    // echo $_SESSION["sid"];
+    // echo $_SESSION["managerID"];
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $username = $_POST['username'];
         $password = $_POST['password'];
