@@ -23,7 +23,7 @@ function getAllTours($sid)
 {
 
   global $db;
-  $query = "SELECT * FROM Tour WHERE sid=:sid";
+  $query = "SELECT * FROM Tour t NATURAL JOIN Property WHERE t.sid=:sid";
   $statement = $db->prepare($query);
   $statement->bindValue(':sid', $sid);
   $statement->execute();

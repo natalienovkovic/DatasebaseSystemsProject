@@ -14,7 +14,7 @@ if(!isset($_SESSION['sid']))
 $info = myInfo($sid);
 $properties = getAllProperties();
 $favorites = getMyFavorites($sid);
-$tours = getMyTours($sid);
+$tours = getAllTours($sid);
 $i=1;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!empty($_POST['action']) && $_POST['action'] == 'Remove') {
@@ -46,11 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-
-
-<!-- navbar -->
-<?php include 'navbar.html' ?>
-
+	<?php include 'navbar.html' ?>
 
 	<div name='body'>
 		<div name='welcome-msg'>
@@ -64,31 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</div>
 		</div>
 		<div class='container'>
-			<hr style='background-color:#343a40;border:none;height: 1px;'>
-			<h2>My Favorites</h2>
-			<div class='container'>
-				<?php foreach ($properties as $p): ?>
-					<div class="container" style='padding: 10px;border: solid 1px;border-radius: 30px; margin-bottom: 20px;margin-right:0px;margin-left:0px;margin-top:10px;'>
-						<div class='row'>
-							<div class='col-4'>
-							<img src="house.png" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
-							</div>
-							<div class="col-8">
-								<p>General Location:<?php echo $p['general_location']; ?></p>
-								<p>Address:<?php echo $p['street'] . ", " . $p['city'] . ", " . $p['state'] . ", " . $p['zipcode']; ?></p>
-								<p>Move-in:<?php echo $p['move_in_date']; ?></p>
-								<p><?php if($p['house'] == 0)
-								echo "Apartment";
-								else
-									echo "House";
-								?>
-							</p>
-							<div class='row'style='width: 75%;'>
-								<div class='col-sm'>
-									<p>Bedrooms:<?php echo $p['num_bedrooms'];?></p>
-								</div>
-								<div class='col-sm'>
-									<p>Bathrooms:<?php echo $p['num_bathrooms'];?></p>
+			<hr style='background-color:#343a40;border:solid 1px;height: 1px;'>
+			<?php if($favorites != null): ?>
+				<h2>My Favorites</h2>
+				<div class='container'>
+					<?php foreach ($favorites as $p): ?>
+						<div class="container" style='padding: 10px;border: solid 1px;border-radius: 30px; margin-bottom: 20px;margin-right:0px;margin-left:0px;margin-top:10px;'>
+							<div class='row'>
+								<div class='col-4'>
+									<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT1d8HV0p6VGisUDcr3SHplfhTARrvDeX9IHw&usqp=CAU" alt="Home picture here!" style='float:left;width:300px; height:300px;'>
 								</div>
 								<div class="col-8">
 									<p>General Location:<?php echo $p['general_location']; ?></p>
