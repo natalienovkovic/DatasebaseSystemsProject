@@ -21,6 +21,7 @@ $city = "";
 $state = ""; 
 $zipcode = "";
 $managerID = $_SESSION['managerID'];
+$isUpdate = False;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -56,11 +57,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
      $state = $p['state']; 
      $zipcode = $p['zipcode'];
    endforeach;
+   $isUpdate = True;
  }
  elseif(!empty($_POST['action']) && ($_POST['action']=='Confirm update'))
  {
    updateProperty($_POST['listingID'], $_POST['num_tenants']);
    $properties = getAllProperties();
+ }
+ elseif(!empty($_POST['action']) && ($_POST['action']=='Cancel'))
+ {
+   header("Location:manAcct.php");
  }
 }
 ?>
@@ -83,8 +89,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   <?php include 'navbar.html' ?>
 
   <div class="container">
-
-    <h1>Add and Update a Property</h1>
+    <?php if($isUpdate):?>
+    <h1>Update a Listing</h1>
+  <?php else:?>
+    <h1>Add a Listing</h1>
+  <?php endif;?>  
     <!-- <form action="formprocessing.php" method="post">  -->
       <form name="mainForm" action="addListing.php" method="post">
         <div class='container'> 
@@ -236,9 +245,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
               <input type="text" class="form-control" name="zipcode" value="<?php echo $zipcode ?>" required/>        
             </div> 
           </div>
+          <?php if($isUpdate == False):?>
           <input type="submit" style='color:black;background-color:#84DCC6;border-color:#84DCC6;' value="Add" name="action" class="btn btn-dark" title="Insert a property into a properties table"/>
+          <?php else:?>
           <input type="submit" style='color:black;background-color:#84DCC6;border-color:#84DCC6;' value="Confirm update" name="action" class="btn btn-dark" title="Confirm update a property" />
-          <button class='btn btn-danger'onclick="location.href = 'manAcct.php'" style='color:black;'>Cancel</button>
+        <?php endif;?>
+          <button name='action' value='Cancel' class='btn btn-danger'onclick="location.href = 'manAcct.php'" style='color:black;'>Cancel</button>
         </div>
       </form>  
 

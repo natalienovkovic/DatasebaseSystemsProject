@@ -18,7 +18,6 @@ $tours = getMyTours($sid);
 $i=1;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!empty($_POST['action']) && $_POST['action'] == 'Remove') {
-		echo "removing" . $_POST['favorite_to_delete'] . "<br>";
 		removeFavorite($sid, $_POST['favorite_to_delete']);
 		$favorites = getMyFavorites($sid);
 } else if (!empty($_POST['action']) && ($_POST['action'] == 'Cancel')) {
@@ -134,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 								</form>
 								<form style='display:inline-block;' action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 									<input type="submit" value="Remove" name="action" class="btn btn-danger" title="Permanently delete the record" style='color:black;margin-top:10px;'/>
-									<input type="hidden" name="favorite_to_delete" value="<?php echo $item['listingID'] ?>" />
+									<input type="hidden" name="favorite_to_delete" value="<?php echo $p['listingID'] ?>" />
 								</form>
 							</div>
 						</div>
