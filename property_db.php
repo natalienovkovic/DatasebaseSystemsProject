@@ -108,7 +108,19 @@ function addStudentAccount($username, $passwrd){
   
   global $db;
 
-  $query = "INSERT INTO Student_sign_in VALUES(:username,NULL, :passwrd)";
+  $query = "INSERT INTO Student_sign_in VALUES(:username, NULL, :passwrd)";
+  $statement = $db->prepare($query);
+  $statement->bindValue(':username', $username);
+  $statement->bindValue(':passwrd', $passwrd);
+  $statement->execute(); // run query
+  $statement->closeCursor(); //release hold on this connection
+  
+}
+function addManagerAccount($username, $passwrd){
+  
+  global $db;
+
+  $query = "INSERT INTO Manager_sign_in VALUES(:username, NULL, :passwrd)";
   $statement = $db->prepare($query);
   $statement->bindValue(':username', $username);
   $statement->bindValue(':passwrd', $passwrd);
@@ -145,18 +157,7 @@ function addManagerInfo($username, $company, $phone, $email){
   $statement->closeCursor(); //release hold on this connection
   
 }
-function addManagerAccount($username, $passwrd){
-  
-  global $db;
 
-  $query = "INSERT INTO Manager_sign_in VALUES(:username,NULL, :passwrd)";
-  $statement = $db->prepare($query);
-  $statement->bindValue(':username', $username);
-  $statement->bindValue(':passwrd', $passwrd);
-  $statement->execute(); // run query
-  $statement->closeCursor(); //release hold on this connection
-  
-}
 
 
 function verifyStudentRegistered($username){

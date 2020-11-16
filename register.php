@@ -39,12 +39,7 @@
                         addManagerAccount($username, $pwd);
                         addManagerInfo($username, $company, $phone, $email);
                     }
-                    // if(verifyManagerRegistered($username) == 1){
-                    //     echo "Hi, you have successfully Registered as a Manager";
-                    // }
-                    // else{
-                    //     echo "problem registering";
-                    // }
+                    
                 }
             }
         }
@@ -104,9 +99,9 @@
                 </div>
                 <div class = "form-group">
                     Account Type:<br>
-                    <input type="radio" id="manager" name="acctype" value="manager" required>
+                    <input type="radio" id="manager" name="radio" value="manager" required>
                     <label for="manager">Manager</label><br>
-                    <input type="radio" id="student" name="acctype" value="student" required>
+                    <input type="radio" id="student" name="radio" value="student" required>
                     <label for="student">Student</label><br>
                 </div>
                 <input 
@@ -115,7 +110,6 @@
                     name="submit" 
                     class="btn btn-dark" 
                     title="create account"
-                    onclick = "myfunction()"
                 /> 
 
                 <!-- buttons -->
